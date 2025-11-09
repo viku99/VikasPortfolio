@@ -10,6 +10,7 @@ const containerVariants: Variants = {
   visible: {
     opacity: 1,
     transition: {
+      delay: 0.5, // Delay to sync with page transition
       staggerChildren: 0.1,
     },
   },
@@ -92,7 +93,11 @@ const Portfolio = () => {
 
   return (
     <div className="container mx-auto px-6 md:px-8 pt-40 pb-24 min-h-screen">
-      <motion.div initial="hidden" animate="visible" variants={containerVariants}>
+      <motion.div 
+        initial="hidden" 
+        animate="visible"
+        variants={containerVariants}
+      >
         <motion.div variants={itemVariants} className="mb-12 text-center">
             <h1 className="text-5xl md:text-7xl font-bold tracking-tighter mb-4">
                 Selected Works

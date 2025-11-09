@@ -6,6 +6,7 @@ import { ChevronDown } from 'lucide-react';
 const Home = () => {
   const navigate = useNavigate();
   const navigatedRef = useRef(false);
+  const touchStartY = useRef(0);
   
   const mouseX = useMotionValue(typeof window !== 'undefined' ? window.innerWidth / 2 : 0);
   const mouseY = useMotionValue(typeof window !== 'undefined' ? window.innerHeight / 2 : 0);
@@ -15,7 +16,6 @@ const Home = () => {
       mouseX.set(e.clientX);
       mouseY.set(e.clientY);
     };
-
     window.addEventListener('mousemove', handleMouseMove);
     
     const handleScroll = (event: WheelEvent) => {
@@ -25,10 +25,31 @@ const Home = () => {
       }
     };
     window.addEventListener('wheel', handleScroll, { passive: true });
+
+    const handleTouchStart = (event: TouchEvent) => {
+      touchStartY.current = event.touches[0].clientY;
+    };
+
+    const handleTouchMove = (event: TouchEvent) => {
+      if (navigatedRef.current) return;
+      const currentY = event.touches[0].clientY;
+      const deltaY = currentY - touchStartY.current;
+
+      // Threshold for swipe up
+      if (deltaY < -50) { 
+        navigatedRef.current = true;
+        navigate('/portfolio');
+      }
+    };
+
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchmove', handleTouchMove, { passive: true });
     
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('wheel', handleScroll);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchmove', handleTouchMove);
     };
   }, [navigate, mouseX, mouseY]);
 
