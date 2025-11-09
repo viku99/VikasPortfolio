@@ -26,7 +26,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
         <motion.div
           className="absolute inset-0"
           whileHover={{ scale: 1.1 }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         >
           <AnimatePresence>
             {!isHovered && (

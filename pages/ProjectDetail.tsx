@@ -90,7 +90,7 @@ const ProjectDetail = () => {
         <motion.div 
             className="absolute inset-0"
             layoutId={`project-container-${project.id}`}
-            transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
+            transition={{ duration: 0.5, ease: [0.76, 0, 0.24, 1] }}
         >
              <VideoPlayer {...project.heroVideo} showControls={project.heroVideo.type === 'youtube'} />
              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>

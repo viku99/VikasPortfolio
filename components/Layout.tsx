@@ -16,7 +16,7 @@ function usePrevious<T>(value: T): T | undefined {
 }
 
 const transition = {
-  duration: 0.7,
+  duration: 0.4,
   ease: [0.76, 0, 0.24, 1] as const,
 };
 
@@ -24,11 +24,11 @@ const topShutterVariants: Variants = {
   initial: { y: '0%' }, // Closed state
   animate: { // Open state
     y: '-100%',
-    transition: { ...transition, delay: 0.7 },
+    transition: { ...transition, delay: 0.4 },
   },
   exit: { // Close state
     y: '0%',
-    transition: { ...transition, delay: 0.1 },
+    transition: { ...transition, delay: 0 },
   },
 };
 
@@ -36,11 +36,11 @@ const bottomShutterVariants: Variants = {
   initial: { y: '0%' }, // Closed state
   animate: { // Open state
     y: '100%',
-    transition: { ...transition, delay: 0.7 },
+    transition: { ...transition, delay: 0.4 },
   },
   exit: { // Close state
     y: '0%',
-    transition: { ...transition, delay: 0.1 },
+    transition: { ...transition, delay: 0 },
   },
 };
 
