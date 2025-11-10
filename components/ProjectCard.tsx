@@ -11,6 +11,7 @@ interface ProjectCardProps {
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   return (
     <Link
@@ -28,6 +29,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
         }}
         transition={{ duration: 0.3, ease: 'easeOut' }}
       >
+        {!isImageLoaded && !isHovered && (
+          <div className="absolute inset-0 bg-secondary animate-pulse" />
+        )}
         <div
           className="absolute inset-0"
         >
@@ -37,8 +41,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
                 src={project.imageUrl}
                 alt={project.title}
                 className="w-full h-full object-cover"
+                loading="lazy"
+                onLoad={() => setIsImageLoaded(true)}
                 initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
+                animate={{ opacity: isImageLoaded ? 1 : 0 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.5, ease: 'easeInOut' }}
                 layoutId={`project-image-${project.id}`}
