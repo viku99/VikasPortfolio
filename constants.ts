@@ -1,5 +1,17 @@
 import { Project } from './types';
 
+// ============================================================================
+// SITE CONFIGURATION
+// ============================================================================
+// Here you can edit the core information for your portfolio site.
+
+/**
+ * SOCIAL MEDIA LINKS
+ * ------------------
+ * Add or edit your social media links here.
+ * - name: The display name of the social media platform.
+ * - href: The full URL to your profile.
+ */
 export const SOCIAL_LINKS = [
   { name: 'LinkedIn', href: "https://www.linkedin.com/in/vikasbala19" },
   { name: 'Behance', href: "https://www.behance.net/vikasbala" },
@@ -7,6 +19,62 @@ export const SOCIAL_LINKS = [
   { name: 'Instagram', href: "https://www.instagram.com/zorox.x_" },
 ];
 
+
+// ============================================================================
+// PROJECT DATA
+// ============================================================================
+// This is where you manage all the projects showcased in your portfolio.
+// To add a new project, simply copy one of the existing project objects and
+// modify its content.
+
+/**
+ * PROJECT STRUCTURE GUIDE
+ * -----------------------
+ * Here's a breakdown of what each field in a project object means:
+ *
+ * - id: A unique identifier for the project. Use a URL-friendly slug
+ *       (e.g., 'my-awesome-project'). This is used for the project's page link.
+ *
+ * - title: The main title of your project.
+ *
+ * - category: A short description of the project's type (e.g., 'Interactive Web Experience').
+ *
+ * - description: A more detailed summary of the project. This appears on the project
+ *                detail page.
+ *
+ * - imageUrl: The URL for the static image shown on the portfolio grid card
+ *             before a user hovers over it. Can be a link or a local path like '/images/my-image.jpg'.
+ *
+ * - cardPreviewVideo: The video that plays when a user hovers over the project
+ *                     card in the portfolio grid.
+ *   - type: Can be 'local' or 'youtube'.
+ *           'local': Use for video files stored in your public/videos folder.
+ *           'youtube': Use for videos hosted on YouTube.
+ *   - src: If type is 'local', this is the path to the video (e.g., '/videos/preview1.mp4').
+ *          If type is 'youtube', this is the YouTube Video ID (e.g., 'LDU_Txk06tM').
+ *
+ * - heroVideo: The main, large video displayed at the top of the project detail page.
+ *   - type: 'local' or 'youtube'.
+ *   - src: Path or YouTube Video ID.
+ *
+ * - details: An object containing specific project metadata.
+ *   - role: Your role on the project (e.g., 'Lead Frontend Developer').
+ *   - techStack: A list of technologies, software, or skills used.
+ *   - year: The year the project was completed.
+ *   - liveUrl: (Optional) A link to the live version of the project. If you don't
+ *              have one, you can remove this line.
+ *
+ * - challenge: (Optional) Describe the primary challenge of the project.
+ *              Remove this line if not needed.
+ *
+ * - solution: (Optional) Describe how you solved the challenge.
+ *             Remove this line if not needed.
+ *
+ * - gallery: (Optional) A list of additional images or videos for the project page.
+ *            Remove this section if the project doesn't have a gallery.
+ *   - type: 'image' or 'video'.
+ *   - src: The URL or path to the media file.
+ */
 export const PROJECTS: Project[] = [
   {
     id: 'project-cyberscape',
