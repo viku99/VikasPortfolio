@@ -28,6 +28,14 @@ export const PROJECTS: Project[] = [
       year: 2023,
       liveUrl: '#',
     },
+    challenge: 'The primary challenge was to create a highly detailed, real-time 3D environment that could run smoothly in a web browser without sacrificing visual fidelity. We needed to optimize complex models and lighting while maintaining an interactive frame rate across various devices.',
+    solution: 'We leveraged Drei and custom shaders within React Three Fiber to build an efficient rendering pipeline. By baking lighting, using Level of Detail (LOD) for models, and implementing a custom asset loading strategy, we achieved a cinematic, high-performance experience directly on the web.',
+    gallery: [
+      { type: 'image', src: 'https://picsum.photos/seed/cyberscape-g1/1280/720' },
+      { type: 'image', src: 'https://picsum.photos/seed/cyberscape-g2/1280/720' },
+      { type: 'image', src: 'https://picsum.photos/seed/cyberscape-g3/720/1280' },
+      { type: 'image', src: 'https://picsum.photos/seed/cyberscape-g4/1280/720' },
+    ],
   },
   {
     id: 'data-vista',
@@ -198,6 +206,12 @@ export const PROJECTS: Project[] = [
       techStack: ['Blender', 'After Effects', 'DaVinci Resolve', 'Unreal Engine', 'Substance Painter'],
       year: 2023,
     },
+    challenge: 'The film required a unique visual language to represent an alien signal. The core task was to blend abstract, ethereal visuals with a cohesive narrative structure, ensuring the audience could feel the story emotionally without traditional dialogue.',
+    solution: 'We developed a custom pipeline using Blender for procedural geometry and Unreal Engine for real-time rendering of volumetric clouds and particle systems. This allowed for rapid iteration on the signal\'s appearance. The final composite in After Effects integrated these elements with a cinematic color grade to evoke a sense of mystery and wonder.',
+    gallery: [
+      { type: 'image', src: 'https://picsum.photos/seed/her-signal-g1/1920/1080' },
+      { type: 'image', src: 'https://picsum.photos/seed/her-signal-g2/1920/1080' },
+    ],
   },
   {
     id: 'artifacts-signal',

@@ -1,6 +1,7 @@
 import React, { useState, FormEvent, ChangeEvent, useEffect, useRef } from 'react';
 import { motion, Variants, AnimatePresence } from 'framer-motion';
 import { Github, Linkedin, Mail, Instagram, Briefcase, CheckCircle, AlertTriangle, Loader } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { SOCIAL_LINKS } from '../constants';
 
 const containerVariants = {
@@ -214,6 +215,18 @@ const Contact = () => {
                     </motion.div>
                 )}
               </motion.form>
+
+              <motion.div
+                variants={itemVariants}
+                className="mt-16 text-center md:hidden"
+              >
+                <Link
+                  to="/about-this-site"
+                  className="text-sm text-neutral-500 hover:text-accent transition-colors underline decoration-dotted underline-offset-4 hover:decoration-solid"
+                >
+                  Curious how this site was built?
+                </Link>
+              </motion.div>
             </motion.div>
           )}
         </AnimatePresence>

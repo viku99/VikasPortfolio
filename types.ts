@@ -19,4 +19,10 @@ export interface Project {
     year: number;
     liveUrl?: string;
   };
+  challenge?: string;
+  solution?: string;
+  gallery?: {
+    type: 'image' | 'video';
+    src: string;
+  }[];
 }
