@@ -30,9 +30,9 @@ const itemVariants: Variants = {
 };
 
 const sortOptions = [
-    { value: 'default', label: 'Sort by: Default' },
-    { value: 'year-newest', label: 'Year: Newest First' },
-    { value: 'year-oldest', label: 'Year: Oldest First' },
+    { value: 'default', label: 'Default' },
+    { value: 'year-newest', label: 'Newest First' },
+    { value: 'year-oldest', label: 'Oldest First' },
     { value: 'title-az', label: 'Title: A-Z' },
     { value: 'title-za', label: 'Title: Z-A' },
     { value: 'category', label: 'Category' },
@@ -42,13 +42,19 @@ const sortOptions = [
 const Portfolio = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('default');
+  const [selectedTech, setSelectedTech] = useState<string | null>(null);
   const [isSortOpen, setIsSortOpen] = useState(false);
+  const [isTechOpen, setIsTechOpen] = useState(false);
   const sortRef = useRef<HTMLDivElement>(null);
+  const techRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
         if (sortRef.current && !sortRef.current.contains(event.target as Node)) {
             setIsSortOpen(false);
+        }
+        if (techRef.current && !techRef.current.contains(event.target as Node)) {
+            setIsTechOpen(false);
         }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -57,10 +63,20 @@ const Portfolio = () => {
     };
   }, []);
 
+  const techCategories = {
+    'Design': ["Photoshop", "Illustrator"],
+    'Video & Motion': ["After Effects", "Premiere Pro", "DaVinci Resolve"],
+    '3D & VFX': ["Blender", "Maya", "Houdini", "Unreal Engine", "Substance Painter"]
+  };
+
+  const handleTechChange = (tech: string) => {
+    setSelectedTech(prev => prev === tech ? null : tech);
+  };
+
   const displayedProjects = useMemo(() => {
-    // 1. Filter first based on search query
+    // 1. Filter by search query
     const lowercasedQuery = searchQuery.toLowerCase().trim();
-    const filtered = lowercasedQuery === ''
+    const filteredBySearch = lowercasedQuery === ''
       ? [...PROJECTS]
       : PROJECTS.filter(project =>
           project.title.toLowerCase().includes(lowercasedQuery) ||
@@ -69,8 +85,15 @@ const Portfolio = () => {
           project.details.techStack.some(tech => tech.toLowerCase().includes(lowercasedQuery))
         );
 
-    // 2. Then sort the filtered results
-    const sorted = [...filtered];
+    // 2. Filter by selected technologies
+    const filteredByTech = !selectedTech
+      ? filteredBySearch
+      : filteredBySearch.filter(project =>
+          project.details.techStack.includes(selectedTech)
+        );
+
+    // 3. Sort the results
+    const sorted = [...filteredByTech];
     switch (sortBy) {
       case 'title-az':
         return sorted.sort((a, b) => a.title.localeCompare(b.title));
@@ -87,9 +110,12 @@ const Portfolio = () => {
         // Find original index to sort back to default
         return sorted.sort((a, b) => PROJECTS.indexOf(a) - PROJECTS.indexOf(b));
     }
-  }, [searchQuery, sortBy]);
+  }, [searchQuery, sortBy, selectedTech]);
   
-  const selectedSortLabel = sortOptions.find(opt => opt.value === sortBy)?.label || 'Sort by...';
+  const selectedSortLabel = `Sort by: ${sortOptions.find(opt => opt.value === sortBy)?.label || 'Default'}`;
+  const techFilterLabel = selectedTech
+    ? `Technology: ${selectedTech}`
+    : 'Filter by Technology';
 
   return (
     <div className="container mx-auto px-6 md:px-8 pt-40 pb-24 min-h-screen">
@@ -107,7 +133,7 @@ const Portfolio = () => {
             </p>
         </motion.div>
         
-        <motion.div variants={itemVariants} className="mb-12 flex flex-col sm:flex-row gap-4 items-center justify-center max-w-2xl mx-auto">
+        <motion.div variants={itemVariants} className="mb-12 flex flex-col md:flex-row gap-4 items-center justify-center max-w-4xl mx-auto">
           <div className="relative w-full flex-grow">
             <input
               type="text"
@@ -120,10 +146,60 @@ const Portfolio = () => {
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-500 pointer-events-none" />
           </div>
           
-           <div className="relative w-full sm:w-auto" ref={sortRef}>
+          <div className="relative w-full md:w-auto" ref={techRef}>
+            <button
+                onClick={() => setIsTechOpen(!isTechOpen)}
+                className="w-full md:w-auto bg-primary border border-secondary pl-4 pr-4 py-3 text-accent focus:outline-none focus:ring-2 focus:ring-accent/50 rounded-full transition-all duration-300 flex items-center justify-between min-w-[220px]"
+                aria-haspopup="listbox"
+                aria-expanded={isTechOpen}
+            >
+                <span>{techFilterLabel}</span>
+                <motion.div
+                    animate={{ rotate: isTechOpen ? 180 : 0 }}
+                    transition={{ duration: 0.3 }}
+                >
+                    <ChevronDown className="w-5 h-5 text-neutral-400 ml-3" />
+                </motion.div>
+            </button>
+            <AnimatePresence>
+                {isTechOpen && (
+                    <motion.ul
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 0.2, ease: "easeOut" }}
+                        className="absolute top-full mt-2 w-full md:w-72 bg-primary border border-secondary rounded-lg shadow-2xl z-20 overflow-hidden max-h-80 overflow-y-auto"
+                        role="listbox"
+                    >
+                      {Object.keys(techCategories).map((category) => (
+                        <React.Fragment key={category}>
+                            <li className="px-4 pt-3 pb-1 text-xs uppercase tracking-widest text-neutral-500 font-bold select-none">
+                                {category}
+                            </li>
+                            {techCategories[category as keyof typeof techCategories].map(tech => (
+                                <li
+                                    key={tech}
+                                    onClick={() => handleTechChange(tech)}
+                                    className="px-4 py-2 text-left cursor-pointer transition-colors duration-200 text-neutral-300 hover:bg-secondary"
+                                    role="option"
+                                    aria-selected={selectedTech === tech}
+                                >
+                                    <span className={selectedTech === tech ? 'text-accent font-medium' : ''}>
+                                        {tech}
+                                    </span>
+                                </li>
+                            ))}
+                        </React.Fragment>
+                      ))}
+                    </motion.ul>
+                )}
+            </AnimatePresence>
+          </div>
+
+           <div className="relative w-full md:w-auto" ref={sortRef}>
             <button
                 onClick={() => setIsSortOpen(!isSortOpen)}
-                className="w-full sm:w-auto bg-primary border border-secondary pl-4 pr-4 py-3 text-accent focus:outline-none focus:ring-2 focus:ring-accent/50 rounded-full transition-all duration-300 flex items-center justify-between min-w-[220px]"
+                className="w-full md:w-auto bg-primary border border-secondary pl-4 pr-4 py-3 text-accent focus:outline-none focus:ring-2 focus:ring-accent/50 rounded-full transition-all duration-300 flex items-center justify-between min-w-[220px]"
                 aria-haspopup="listbox"
                 aria-expanded={isSortOpen}
             >
@@ -174,13 +250,13 @@ const Portfolio = () => {
                     <ProjectCard project={project} />
                 </motion.div>
             ))}
-            {displayedProjects.length === 0 && searchQuery && (
+            {displayedProjects.length === 0 && (searchQuery || selectedTech !== null) && (
                  <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     className="text-center col-span-1 md:col-span-2 lg:col-span-3 py-16"
                  >
-                    <p className="text-lg text-neutral-400">No projects found for "{searchQuery}"</p>
+                    <p className="text-lg text-neutral-400">No projects found matching your criteria.</p>
                 </motion.div>
             )}
         </motion.div>

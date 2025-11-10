@@ -1,5 +1,5 @@
-
 import React, { useState, useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
 import { Play, Pause, Volume2, VolumeX } from 'lucide-react';
 
 interface VideoPlayerProps {
@@ -7,9 +7,10 @@ interface VideoPlayerProps {
   src: string;
   className?: string;
   showControls?: boolean;
+  zoomOnHover?: boolean;
 }
 
-const VideoPlayer: React.FC<VideoPlayerProps> = ({ type, src, className, showControls = false }) => {
+const VideoPlayer: React.FC<VideoPlayerProps> = ({ type, src, className, showControls = false, zoomOnHover = false }) => {
   const playerRef = useRef<any>(null);
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
@@ -124,8 +125,10 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ type, src, className, showCon
     }
   };
 
+  let playerElement;
+
   if (type === 'youtube' && showControls) {
-    return (
+    playerElement = (
       <div className={`relative w-full h-full group ${className}`}>
         <div id={playerId} className="w-full h-full" />
         <div className="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -148,10 +151,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ type, src, className, showCon
         </div>
       </div>
     );
-  }
-
-  if (type === 'youtube') {
-    return (
+  } else if (type === 'youtube') {
+    playerElement = (
       <iframe
         className={`w-full h-full object-cover ${className}`}
         src={`https://www.youtube.com/embed/${src}?autoplay=1&mute=1&loop=1&playlist=${src}&controls=0&showinfo=0&autohide=1&modestbranding=1&playsinline=1`}
@@ -161,18 +162,32 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ type, src, className, showCon
         title="YouTube video player"
       ></iframe>
     );
+  } else {
+    playerElement = (
+      <video
+        className={`w-full h-full object-cover ${className}`}
+        src={src}
+        autoPlay
+        muted
+        loop
+        playsInline
+      />
+    );
   }
 
-  return (
-    <video
-      className={`w-full h-full object-cover ${className}`}
-      src={src}
-      autoPlay
-      muted
-      loop
-      playsInline
-    />
-  );
+  if (zoomOnHover) {
+    return (
+      <motion.div
+        className="w-full h-full"
+        whileHover={{ scale: 1.05 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      >
+        {playerElement}
+      </motion.div>
+    );
+  }
+
+  return playerElement;
 };
 
 export default VideoPlayer;

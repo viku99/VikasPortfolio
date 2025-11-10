@@ -24,7 +24,7 @@ export const PROJECTS: Project[] = [
     },
     details: {
       role: 'Lead Frontend & WebGL Developer',
-      techStack: ['React', 'Three.js', 'React Three Fiber', 'GLSL', 'Framer Motion', 'VFX'],
+      techStack: ['Blender', 'Unreal Engine'],
       year: 2023,
       liveUrl: '#',
     },
@@ -45,7 +45,7 @@ export const PROJECTS: Project[] = [
     },
     details: {
       role: 'Senior Frontend Engineer',
-      techStack: ['React', 'TypeScript', 'D3.js', 'WebSockets', 'Tailwind CSS'],
+      techStack: [],
       year: 2022,
     },
   },
@@ -65,7 +65,7 @@ export const PROJECTS: Project[] = [
     },
     details: {
       role: 'UI/UX Designer & Developer',
-      techStack: ['React', 'Framer Motion', 'Stripe API', 'Styled Components'],
+      techStack: [],
       year: 2023,
       liveUrl: '#',
     },
@@ -86,7 +86,7 @@ export const PROJECTS: Project[] = [
     },
     details: {
       role: 'Creator & Sole Developer',
-      techStack: ['React', 'Web Audio API', 'TypeScript', 'OpenWeatherMap API'],
+      techStack: [],
       year: 2021,
     },
   },
@@ -106,7 +106,7 @@ export const PROJECTS: Project[] = [
     },
     details: {
       role: 'Full Stack & Blockchain Developer',
-      techStack: ['Next.js', 'p5.js', 'GLSL', 'Solidity', 'Ethers.js', 'VFX'],
+      techStack: ['Blender', 'Houdini'],
       year: 2023,
       liveUrl: '#',
     },
@@ -127,7 +127,7 @@ export const PROJECTS: Project[] = [
     },
     details: {
       role: 'Lead UI/UX Engineer',
-      techStack: ['React Native', 'Framer Motion', 'Victory Charts', 'Firebase'],
+      techStack: [],
       year: 2022,
     },
   },
@@ -147,7 +147,7 @@ export const PROJECTS: Project[] = [
     },
     details: {
       role: 'Creative Developer',
-      techStack: ['React', 'Three.js', 'React Three Fiber', 'GraphQL', 'Mapbox API'],
+      techStack: [],
       year: 2021,
     },
   },
@@ -167,7 +167,7 @@ export const PROJECTS: Project[] = [
     },
     details: {
       role: 'UI/UX Prototyper',
-      techStack: ['SvelteKit', 'Framer Motion', 'GSAP', 'CSS Variables'],
+      techStack: [],
       year: 2023,
     },
   },
@@ -181,7 +181,7 @@ export const PROJECTS: Project[] = [
     heroVideo: { type: 'youtube', src: 'k53_S-f0q_8' },
     details: {
       role: 'Director & Motion Designer',
-      techStack: ['After Effects', 'Premiere Pro', 'Cinema 4D'],
+      techStack: ['After Effects', 'Premiere Pro'],
       year: 2024,
     },
   },
@@ -195,7 +195,7 @@ export const PROJECTS: Project[] = [
     heroVideo: { type: 'youtube', src: 'xX_0s034S3A' },
     details: {
       role: 'Creative Director',
-      techStack: ['Blender', 'After Effects', 'Redshift', 'DaVinci Resolve', 'VFX'],
+      techStack: ['Blender', 'After Effects', 'DaVinci Resolve', 'Unreal Engine', 'Substance Painter'],
       year: 2023,
     },
   },
@@ -209,7 +209,7 @@ export const PROJECTS: Project[] = [
     heroVideo: { type: 'youtube', src: '3h0_v9_4M4A' },
     details: {
       role: 'Visual Artist',
-      techStack: ['WebGL', 'Three.js', 'Blender', 'Photoshop', 'VFX'],
+      techStack: ['Blender', 'Photoshop'],
       year: 2023,
     },
   },
@@ -223,7 +223,7 @@ export const PROJECTS: Project[] = [
     heroVideo: { type: 'youtube', src: '_SO2Cgt5j4A' },
     details: {
       role: 'Motion Designer',
-      techStack: ['After Effects', 'Web Audio API', 'p5.js'],
+      techStack: ['After Effects'],
       year: 2022,
     },
   },
@@ -237,7 +237,7 @@ export const PROJECTS: Project[] = [
     heroVideo: { type: 'youtube', src: 'u_fKMdCZ_b0' },
     details: {
       role: 'Motion Graphics Artist',
-      techStack: ['After Effects', 'Cinema 4D', 'Framer Motion'],
+      techStack: ['After Effects'],
       year: 2024,
     },
   },
@@ -251,7 +251,7 @@ export const PROJECTS: Project[] = [
     heroVideo: { type: 'youtube', src: 'ojCYw502D_8' },
     details: {
       role: 'Creative Developer',
-      techStack: ['React', 'Framer Motion', 'Web Audio API'],
+      techStack: [],
       year: 2021,
     },
   },
@@ -265,7 +265,7 @@ export const PROJECTS: Project[] = [
     heroVideo: { type: 'youtube', src: 'G_p94jVug1Y' },
     details: {
       role: 'UI/UX Designer & Developer',
-      techStack: ['GSAP', 'CSS Variables', 'Figma'],
+      techStack: ['Illustrator'],
       year: 2022,
     },
   },
@@ -279,7 +279,7 @@ export const PROJECTS: Project[] = [
     heroVideo: { type: 'youtube', src: 'B6BfV6_6_2M' },
     details: {
       role: 'Title Designer',
-      techStack: ['After Effects', 'Blender', 'Typography'],
+      techStack: ['After Effects', 'Blender'],
       year: 2023,
     },
   },
@@ -293,7 +293,7 @@ export const PROJECTS: Project[] = [
     heroVideo: { type: 'youtube', src: 'LDU_Txk06tM' },
     details: {
       role: 'Visual Artist',
-      techStack: ['Cinema 4D', 'Redshift', 'Houdini', 'VFX'],
+      techStack: ['Houdini', 'Maya'],
       year: 2021,
     },
   },
@@ -307,7 +307,7 @@ export const PROJECTS: Project[] = [
     heroVideo: { type: 'youtube', src: 'yfqVLpcLp8k' },
     details: {
       role: 'Designer & Animator',
-      techStack: ['Photoshop', 'After Effects', 'Figma'],
+      techStack: ['Photoshop', 'After Effects'],
       year: 2022,
     },
   },
@@ -321,7 +321,7 @@ export const PROJECTS: Project[] = [
     heroVideo: { type: 'youtube', src: 'hHW1oY2ir_M' },
     details: {
       role: 'Creative Coder',
-      techStack: ['TouchDesigner', 'GLSL', 'Web Audio API', 'VFX'],
+      techStack: ['Houdini'],
       year: 2023,
     },
   },
@@ -349,7 +349,7 @@ export const PROJECTS: Project[] = [
     heroVideo: { type: 'youtube', src: '28-QzTSkX-g' },
     details: {
       role: 'Cinematographer',
-      techStack: ['DaVinci Resolve', 'Sound Design'],
+      techStack: ['DaVinci Resolve'],
       year: 2021,
     },
   },
@@ -363,7 +363,7 @@ export const PROJECTS: Project[] = [
     heroVideo: { type: 'local', src: '/videos/hero1.mp4' },
     details: {
       role: 'Animator',
-      techStack: ['Cinema 4D', 'After Effects', 'Redshift'],
+      techStack: ['After Effects'],
       year: 2023,
     },
   },
@@ -377,7 +377,7 @@ export const PROJECTS: Project[] = [
     heroVideo: { type: 'youtube', src: 'B6BfV6_6_2M' },
     details: {
       role: 'Typographer & Motion Designer',
-      techStack: ['After Effects', 'Framer Motion'],
+      techStack: ['After Effects'],
       year: 2022,
     },
   },
@@ -391,7 +391,7 @@ export const PROJECTS: Project[] = [
     heroVideo: { type: 'youtube', src: 'xX_0s034S3A' },
     details: {
       role: 'Creative Director',
-      techStack: ['AI Generative Tools', 'After Effects', 'GLSL', 'VFX'],
+      techStack: ['After Effects', 'Houdini'],
       year: 2024,
     },
   },
@@ -405,7 +405,7 @@ export const PROJECTS: Project[] = [
     heroVideo: { type: 'local', src: '/videos/hero2.mp4' },
     details: {
       role: 'Visual Artist',
-      techStack: ['Houdini', 'Nuke', 'After Effects', 'VFX'],
+      techStack: ['Houdini', 'After Effects'],
       year: 2021,
     },
   },
@@ -419,7 +419,7 @@ export const PROJECTS: Project[] = [
     heroVideo: { type: 'youtube', src: 'aWzlQ2N62_E' },
     details: {
       role: 'Digital Artist',
-      techStack: ['Processing', 'Glitch Art Tools', 'After Effects'],
+      techStack: ['After Effects'],
       year: 2022,
     },
   },
@@ -433,7 +433,7 @@ export const PROJECTS: Project[] = [
     heroVideo: { type: 'youtube', src: '3h0_v9_4M4A' },
     details: {
       role: 'UI/UX Prototyper',
-      techStack: ['Figma', 'Framer Motion', 'JavaScript'],
+      techStack: [],
       year: 2023,
     },
   },

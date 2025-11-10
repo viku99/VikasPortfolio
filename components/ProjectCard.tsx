@@ -21,12 +21,15 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
     >
       <motion.div 
         layoutId={`project-container-${project.id}`} 
-        className="relative aspect-[4/3] overflow-hidden bg-primary"
+        className="relative aspect-[4/3] overflow-hidden bg-primary rounded-lg"
+        whileHover={{
+          y: -8,
+          boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.1)'
+        }}
+        transition={{ duration: 0.3, ease: 'easeOut' }}
       >
-        <motion.div
+        <div
           className="absolute inset-0"
-          whileHover={{ scale: 1.1 }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         >
           <AnimatePresence>
             {!isHovered && (
@@ -51,12 +54,12 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.5, ease: 'easeInOut' }}
               >
-                <VideoPlayer {...project.cardPreviewVideo} />
+                <VideoPlayer {...project.cardPreviewVideo} zoomOnHover={true} />
                  <div className="absolute inset-0 bg-black/40" />
               </motion.div>
             )}
           </AnimatePresence>
-        </motion.div>
+        </div>
         
         <AnimatePresence>
           {isHovered && (
