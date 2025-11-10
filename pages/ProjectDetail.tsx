@@ -1,6 +1,6 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { motion, Variants } from 'framer-motion';
+import { motion, Variants, useScroll, useTransform } from 'framer-motion';
 import { ArrowLeft, ExternalLink, ArrowRight } from 'lucide-react';
 import { PROJECTS } from '../constants';
 import VideoPlayer from '../components/VideoPlayer';
@@ -31,6 +31,12 @@ const ProjectDetail = () => {
   
   const project = projectIndex !== -1 ? PROJECTS[projectIndex] : null;
   const nextProject = project ? PROJECTS[(projectIndex + 1) % PROJECTS.length] : null;
+
+  const breakdownRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: breakdownRef,
+    offset: ['start start', 'end end'],
+  });
 
   if (!project || !nextProject) {
     return (
@@ -161,6 +167,68 @@ const ProjectDetail = () => {
             </motion.div>
         </div>
       </div>
+      
+      {/* Breakdown Section */}
+      {project.breakdown && project.breakdown.length > 0 && (
+        <motion.div 
+            className="bg-background relative"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+        >
+          <div className="container mx-auto px-6 md:px-8 text-center pt-24 pb-16 md:pt-32 md:pb-24">
+            <motion.h2 variants={itemVariants} className="text-4xl font-bold mb-4 text-accent">Shot Breakdown</motion.h2>
+             <motion.p variants={itemVariants} className="text-lg text-neutral-400 mt-4 max-w-2xl mx-auto">
+                A step-by-step deconstruction of the creative and technical process, showing how the final shot was built from the ground up.
+            </motion.p>
+          </div>
+          
+          <div ref={breakdownRef} className="relative" style={{ height: `${project.breakdown.length * 100}vh` }}>
+            <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
+                {project.breakdown.map((step, index) => {
+                    const totalSteps = project.breakdown.length;
+                    const rangeStart = index / totalSteps;
+                    const rangeEnd = (index + 1) / totalSteps;
+                    
+                    const scale = useTransform(scrollYProgress, [rangeStart, rangeEnd], [0.88, 1]);
+                    const opacity = useTransform(scrollYProgress, [rangeStart, rangeStart + 0.05, rangeEnd - 0.05, rangeEnd], [0, 1, 1, 0]);
+
+                    return (
+                        <motion.div 
+                            key={index}
+                            style={{ 
+                                scale,
+                                opacity,
+                                zIndex: index
+                            }}
+                            className="absolute w-[90%] max-w-5xl mx-auto h-[75vh] rounded-2xl overflow-hidden"
+                        >
+                            <div className="relative w-full h-full border border-secondary shadow-2xl bg-primary">
+                                {step.media.type === 'image' ? (
+                                    <img src={step.media.src} alt={step.title} className="w-full h-full object-cover"/>
+                                ) : (
+                                    <VideoPlayer {...step.media} />
+                                )}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                                
+                                <div className="absolute bottom-0 left-0 p-6 md:p-10 text-white">
+                                    <div className="flex items-baseline gap-4">
+                                        <span className="font-black text-5xl text-accent/80 tracking-tighter">
+                                            {String(index + 1).padStart(2, '0')}
+                                        </span>
+                                        <h3 className="text-3xl font-bold">{step.title}</h3>
+                                    </div>
+                                    {step.description && <p className="text-neutral-300 mt-3 max-w-3xl">{step.description}</p>}
+                                </div>
+                            </div>
+                        </motion.div>
+                    );
+                })}
+            </div>
+          </div>
+        </motion.div>
+      )}
 
        {/* Gallery Section */}
       {project.gallery && project.gallery.length > 0 && (

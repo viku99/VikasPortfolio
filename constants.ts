@@ -69,6 +69,13 @@ export const SOCIAL_LINKS = [
  *
  * - solution: (Optional) Describe how you solved the challenge.
  *             Remove this line if not needed.
+ * 
+ * - breakdown: (Optional) An array of steps detailing the project's construction.
+ *   - title: The name of the breakdown step (e.g., "Raw Plate").
+ *   - description: (Optional) A short explanation of this step.
+ *   - media: The visual for this step.
+ *     - type: 'image' or 'video'.
+ *     - src: The URL or path to the media file.
  *
  * - gallery: (Optional) A list of additional images or videos for the project page.
  *            Remove this section if the project doesn't have a gallery.
@@ -98,6 +105,28 @@ export const PROJECTS: Project[] = [
     },
     challenge: 'The primary challenge was to create a highly detailed, real-time 3D environment that could run smoothly in a web browser without sacrificing visual fidelity. We needed to optimize complex models and lighting while maintaining an interactive frame rate across various devices.',
     solution: 'We leveraged Drei and custom shaders within React Three Fiber to build an efficient rendering pipeline. By baking lighting, using Level of Detail (LOD) for models, and implementing a custom asset loading strategy, we achieved a cinematic, high-performance experience directly on the web.',
+    breakdown: [
+      {
+        title: 'Initial Concept Art',
+        description: 'Establishing the mood and color palette. This phase defined the cyberpunk aesthetic and architectural style.',
+        media: { type: 'image', src: 'https://picsum.photos/seed/cs-break-1/1280/720' },
+      },
+      {
+        title: '3D Environment Blockout',
+        description: 'Creating the foundational geometry in Blender. This step focused on scale, composition, and layout before adding detail.',
+        media: { type: 'image', src: 'https://picsum.photos/seed/cs-break-2/1280/720' },
+      },
+      {
+        title: 'Lighting & Texturing Pass',
+        description: 'Applying textures and setting up the core lighting in Unreal Engine to create the signature neon-drenched atmosphere.',
+        media: { type: 'image', src: 'https://picsum.photos/seed/cs-break-3/1280/720' },
+      },
+      {
+        title: 'Final Composite in Browser',
+        description: 'The final real-time render running in the browser, with post-processing effects like bloom and chromatic aberration applied via shaders.',
+        media: { type: 'image', src: 'https://picsum.photos/seed/cs-break-4/1280/720' },
+      },
+    ],
     gallery: [
       { type: 'image', src: 'https://picsum.photos/seed/cyberscape-g1/1280/720' },
       { type: 'image', src: 'https://picsum.photos/seed/cyberscape-g2/1280/720' },
@@ -276,6 +305,28 @@ export const PROJECTS: Project[] = [
     },
     challenge: 'The film required a unique visual language to represent an alien signal. The core task was to blend abstract, ethereal visuals with a cohesive narrative structure, ensuring the audience could feel the story emotionally without traditional dialogue.',
     solution: 'We developed a custom pipeline using Blender for procedural geometry and Unreal Engine for real-time rendering of volumetric clouds and particle systems. This allowed for rapid iteration on the signal\'s appearance. The final composite in After Effects integrated these elements with a cinematic color grade to evoke a sense of mystery and wonder.',
+    breakdown: [
+      {
+        title: 'Raw Plate Footage',
+        description: 'The original, ungraded shot that served as the canvas for all visual effects.',
+        media: { type: 'image', src: 'https://picsum.photos/seed/hs-break-1/1280/720' },
+      },
+      {
+        title: 'Procedural Geometry Pass',
+        description: 'Abstract shapes and signal forms generated in Blender, rendered as a separate layer.',
+        media: { type: 'image', src: 'https://picsum.photos/seed/hs-break-2/1280/720' },
+      },
+      {
+        title: 'Particle & Volumetric Pass',
+        description: 'Atmospheric elements like fog, dust, and energy particles rendered in real-time from Unreal Engine.',
+        media: { type: 'image', src: 'https://picsum.photos/seed/hs-break-3/1280/720' },
+      },
+      {
+        title: 'Final Color Grade',
+        description: 'All layers composited in After Effects, with the final cinematic color grade applied in DaVinci Resolve to unify the shot.',
+        media: { type: 'image', src: 'https://picsum.photos/seed/hs-break-4/1280/720' },
+      },
+    ],
     gallery: [
       { type: 'image', src: 'https://picsum.photos/seed/her-signal-g1/1920/1080' },
       { type: 'image', src: 'https://picsum.photos/seed/her-signal-g2/1920/1080' },

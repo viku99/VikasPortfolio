@@ -25,7 +25,7 @@ const BottomNavigation = () => {
     >
       <div className="container mx-auto flex justify-around items-center h-16">
         <NavItem to="/" label="Home" />
-        <NavItem to="/portfolio" label="Portfolio" />
+        <NavItem to="/portfolio" label="Work" />
         <NavItem to="/about" label="About" />
         <NavItem to="/contact" label="Contact" />
       </div>

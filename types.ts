@@ -1,4 +1,13 @@
 
+export interface BreakdownStep {
+  title: string;
+  description?: string;
+  media: {
+    type: 'image' | 'video';
+    src: string;
+  };
+}
+
 export interface Project {
   id: string;
   title: string;
@@ -25,4 +34,5 @@ export interface Project {
     type: 'image' | 'video';
     src: string;
   }[];
+  breakdown?: BreakdownStep[];
 }
