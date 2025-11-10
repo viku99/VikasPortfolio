@@ -1,35 +1,31 @@
 import React from 'react';
-// FIX: Import `Variants` to correctly type animation variants.
 import { motion, Variants } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
 const Logo = () => {
-  const svgVariants = {
-    hidden: {
-      rotate: -180
-    },
+  const svgVariants: Variants = {
+    hidden: { opacity: 0 },
     visible: {
-      rotate: 0,
-      transition: { duration: 1 }
-    }
+      opacity: 1,
+      transition: {
+        when: 'beforeChildren',
+        staggerChildren: 0.1,
+        delayChildren: 0.2,
+      },
+    },
   };
 
-  // FIX: Added `Variants` type annotation to resolve type error with the `ease` property.
   const pathVariants: Variants = {
     hidden: {
       pathLength: 0,
-      opacity: 0
     },
     visible: {
       pathLength: 1,
-      opacity: 1,
       transition: {
-        duration: 2,
-        ease: 'easeInOut',
-        repeat: Infinity,
-        repeatDelay: 41.5, // 2s duration + 41.5s delay = 43.5s cycle
-      }
-    }
+        duration: 0.8,
+        ease: [0.43, 0.13, 0.23, 0.96],
+      },
+    },
   };
 
   return (
@@ -41,15 +37,27 @@ const Logo = () => {
         variants={svgVariants}
         initial="hidden"
         animate="visible"
+        whileHover={{ scale: 1.1, rotate: 5 }}
+        whileTap={{ scale: 0.95 }}
+        transition={{ type: 'spring', stiffness: 300, damping: 15 }}
       >
         <defs>
           <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" style={{ stopColor: '#FFFFFF', stopOpacity: 1 }} />
-            <stop offset="100%" style={{ stopColor: '#C0C0C0', stopOpacity: 1 }} />
+            <stop offset="100%" style={{ stopColor: '#A3A3A3', stopOpacity: 1 }} />
           </linearGradient>
         </defs>
         <motion.path
-          d="M20 20 L50 80 L80 20"
+          d="M50 80 L20 20"
+          stroke="url(#gradient)"
+          strokeWidth="10"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          fill="transparent"
+          variants={pathVariants}
+        />
+        <motion.path
+          d="M50 80 L80 20"
           stroke="url(#gradient)"
           strokeWidth="10"
           strokeLinecap="round"

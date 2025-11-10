@@ -70,7 +70,8 @@ const Portfolio = () => {
   };
 
   const handleTechChange = (tech: string) => {
-    setSelectedTech(prev => prev === tech ? null : tech);
+    setSelectedTech(prev => (prev === tech ? null : tech));
+    setIsTechOpen(false);
   };
 
   const displayedProjects = useMemo(() => {
@@ -171,6 +172,20 @@ const Portfolio = () => {
                         className="absolute top-full mt-2 w-full md:w-72 bg-primary border border-secondary rounded-lg shadow-2xl z-20 overflow-hidden max-h-80 overflow-y-auto"
                         role="listbox"
                     >
+                      <li
+                        onClick={() => {
+                          setSelectedTech(null);
+                          setIsTechOpen(false);
+                        }}
+                        className="px-4 py-2 text-left cursor-pointer transition-colors duration-200 text-neutral-300 hover:bg-secondary"
+                        role="option"
+                        aria-selected={selectedTech === null}
+                      >
+                        <span className={selectedTech === null ? 'text-accent font-medium' : ''}>
+                          All Technologies
+                        </span>
+                      </li>
+                      <li className="px-4"><div className="border-t border-secondary/50"></div></li>
                       {Object.keys(techCategories).map((category) => (
                         <React.Fragment key={category}>
                             <li className="px-4 pt-3 pb-1 text-xs uppercase tracking-widest text-neutral-500 font-bold select-none">
