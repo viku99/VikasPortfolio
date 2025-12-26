@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, Variants } from 'framer-motion';
-import { Layers, Zap, Wand2, Code, BrainCircuit, ArrowRight } from 'lucide-react';
+import { Zap, Code, BrainCircuit, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const containerVariants: Variants = {
@@ -22,28 +22,6 @@ const itemVariants: Variants = {
     transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] },
   },
 };
-
-interface FeatureCardProps {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-}
-
-const FeatureCard: React.FC<FeatureCardProps> = ({ icon, title, description }) => (
-  <motion.div 
-    className="bg-primary border border-secondary/50 rounded-lg p-6 text-center flex flex-col items-center"
-    variants={itemVariants}
-    initial="hidden"
-    whileInView="visible"
-    viewport={{ once: true, amount: 0.5 }}
-  >
-    <div className="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mb-6 border-2 border-accent/20 text-accent">
-        {icon}
-    </div>
-    <h3 className="text-xl font-bold text-neutral-100 mb-2">{title}</h3>
-    <p className="text-neutral-400 text-sm leading-relaxed">{description}</p>
-  </motion.div>
-);
 
 const TechItem: React.FC<{ name: string; reason: string }> = ({ name, reason }) => (
     <motion.div 
@@ -77,7 +55,26 @@ const AboutWebsite = () => {
           </p>
         </motion.div>
 
-        {/* Section 1: Philosophy */}
+        {/* Section 1: Collaboration */}
+        <motion.div 
+            className="text-center mb-24 md:mb-32 bg-white/[0.02] p-12 rounded-[2rem] border border-white/5"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+        >
+            <motion.div variants={itemVariants} className="flex justify-center items-center gap-4 mb-8">
+                <BrainCircuit size={48} className="text-accent" strokeWidth={1}/>
+                <div className="text-3xl font-thin text-neutral-600">+</div>
+                <Code size={48} className="text-accent" strokeWidth={1}/>
+            </motion.div>
+            <motion.h2 variants={itemVariants} className="text-4xl md:text-5xl font-black text-neutral-100 tracking-tighter uppercase">Human Curation, <br className="md:hidden" /> AI Acceleration.</motion.h2>
+            <motion.p variants={itemVariants} className="text-lg md:text-xl text-neutral-400 mt-6 max-w-2xl mx-auto font-light leading-relaxed">
+              This site was built in partnership with a generative AI. This collaboration helps me elevate my speed and thinking, allowing for rapid technical execution and freeing me to focus purely on creative direction.
+            </motion.p>
+        </motion.div>
+
+        {/* Section 2: Philosophy */}
         <motion.div 
             className="text-center mb-24 md:mb-32"
             variants={containerVariants}
@@ -86,37 +83,9 @@ const AboutWebsite = () => {
             viewport={{ once: true, amount: 0.3 }}
         >
             <motion.h2 variants={itemVariants} className="text-sm uppercase tracking-widest text-neutral-500 mb-4">Philosophy</motion.h2>
-            <motion.p variants={itemVariants} className="text-3xl md:text-4xl font-medium text-neutral-100 leading-tight">
+            <motion.p variants={itemVariants} className="text-3xl md:text-4xl font-medium text-neutral-100 leading-tight tracking-tight">
                 Motion is the primary language, not an afterthought. Every animation, transition, and interaction is designed to tell a story and evoke emotion.
             </motion.p>
-        </motion.div>
-
-        {/* Section 2: Deconstruction */}
-        <motion.div 
-            className="mb-24 md:mb-32"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-        >
-            <motion.h2 variants={itemVariants} className="text-3xl md:text-4xl font-bold text-center tracking-tight mb-12">Deconstructing the Experience</motion.h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <FeatureCard 
-                    icon={<Layers size={28} />} 
-                    title="Cinematic Transitions" 
-                    description="Pages don't just load, they unveil. Custom shutter animations create a sense of entering a new scene, making navigation a deliberate, cinematic act." 
-                />
-                <FeatureCard 
-                    icon={<Zap size={28} />} 
-                    title="Living Canvases" 
-                    description="Project cards are not static images. They are dormant videos that come to life on hover, transforming the grid into a dynamic, interactive preview of the work." 
-                />
-                <FeatureCard 
-                    icon={<Wand2 size={28} />} 
-                    title="Shared Element Motion" 
-                    description="When you click a project, the card fluidly expands into the hero banner of the detail page, creating a seamless and magical transition that maintains context." 
-                />
-            </div>
         </motion.div>
 
         {/* Section 3: Technology */}
@@ -127,7 +96,7 @@ const AboutWebsite = () => {
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
         >
-            <motion.h2 variants={itemVariants} className="text-3xl md:text-4xl font-bold text-center tracking-tight mb-12">Code & Creativity</motion.h2>
+            <motion.h2 variants={itemVariants} className="text-3xl md:text-4xl font-bold text-center tracking-tight mb-12 uppercase">Code & Creativity</motion.h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <TechItem name="React & TypeScript" reason="Provides a robust, modern foundation for building a complex, type-safe user interface." />
                 <TechItem name="Framer Motion" reason="The core animation library chosen for its power in creating fluid, physics-based UI and complex, gesture-driven interactions." />
@@ -136,30 +105,11 @@ const AboutWebsite = () => {
             </div>
         </motion.div>
 
-        {/* Section 4: Collaboration */}
         <motion.div 
-            className="text-center border-t border-secondary pt-16"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
-        >
-            <motion.div variants={itemVariants} className="flex justify-center items-center gap-4 mb-6">
-                <BrainCircuit size={32} className="text-accent"/>
-                <div className="text-2xl font-thin text-neutral-600">+</div>
-                <Code size={32} className="text-accent"/>
-            </motion.div>
-            <motion.h2 variants={itemVariants} className="text-3xl md:text-4xl font-bold text-neutral-100 tracking-tight">Human Curation, AI Acceleration.</motion.h2>
-            <motion.p variants={itemVariants} className="text-lg text-neutral-400 mt-4 max-w-2xl mx-auto">
-              This site was built in partnership with a generative AI. This collaboration helps me elevate my speed and thinking, allowing for rapid technical execution and freeing me to focus purely on creative direction.
-            </motion.p>
-        </motion.div>
-
-        <motion.div 
-            className="mt-16 text-center"
+            className="mt-16 text-center pt-16 border-t border-white/5"
             variants={itemVariants}
         >
-            <Link to="/portfolio" className="group inline-flex items-center justify-center mt-6 text-lg text-accent font-semibold transition-colors hover:text-white">
+            <Link to="/portfolio" className="group inline-flex items-center justify-center text-lg text-accent font-semibold transition-colors hover:text-white uppercase tracking-widest">
                 See the result
                 <ArrowRight className="w-5 h-5 ml-2 transition-transform duration-300 ease-in-out group-hover:translate-x-1" />
             </Link>
