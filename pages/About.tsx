@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion, Variants } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Github, Linkedin, Instagram, Briefcase, User, Target, Zap, Cpu, Activity, Layout } from 'lucide-react';
+import { ArrowRight, Github, Linkedin, Instagram, Briefcase, User, Target, Zap, Cpu, Activity, Layout, Sparkles, TrendingUp } from 'lucide-react';
 import { SOCIAL_LINKS } from '../constants';
 
 const USER_PHOTO = "https://i.postimg.cc/52X4J8tj/moonji.jpg"; 
@@ -30,17 +30,17 @@ const expertiseData = [
   {
     category: 'Creative Direction',
     skills: [
-      { name: 'Motion Narrative', level: 95 },
-      { name: 'Visual Concepting', level: 90 },
-      { name: 'Art Direction', level: 85 },
+      { name: 'Motion Narrative', level: 95, label: 'Advanced' },
+      { name: 'Visual Concepting', level: 90, label: 'Advanced' },
+      { name: 'Art Direction', level: 85, label: 'Inter–Adv' },
     ],
   },
   {
     category: 'Technical Execution',
     skills: [
-      { name: 'After Effects / Compositing', level: 98 },
-      { name: 'Time-Remapping & Rhythms', level: 95 },
-      { name: 'VFX & Color Grading', level: 88 },
+      { name: 'After Effects / Compositing', level: 98, label: 'Advanced' },
+      { name: 'Time-Remapping & Editorial Rhythm', level: 95, label: 'Advanced' },
+      { name: 'VFX & Color Grading', level: 75, label: 'Intermediate' },
     ],
   },
 ];
@@ -63,11 +63,13 @@ const SignatureMethodology = [
     }
 ];
 
-const SkillBar: React.FC<{ name: string; level: number }> = ({ name, level }) => (
+const SkillBar: React.FC<{ name: string; level: number; label: string }> = ({ name, level, label }) => (
   <div className="mb-6 group">
     <div className="flex justify-between items-end mb-2">
-      <h4 className="text-[10px] uppercase tracking-[0.3em] text-neutral-500 font-mono group-hover:text-accent transition-colors">{name}</h4>
-      <span className="text-[10px] font-mono text-neutral-700">{level}%</span>
+      <div className="flex flex-col">
+        <h4 className="text-[10px] uppercase tracking-[0.3em] text-neutral-500 font-mono group-hover:text-accent transition-colors">{name}</h4>
+      </div>
+      <span className="text-[9px] font-mono text-neutral-700 tracking-widest">{label} // {level}%</span>
     </div>
     <div className="h-[2px] w-full bg-white/5 overflow-hidden">
       <motion.div
@@ -196,11 +198,33 @@ const About = () => {
                                 </h3>
                                 <div>
                                     {group.skills.map((skill) => (
-                                        <SkillBar key={skill.name} name={skill.name} level={skill.level} />
+                                        <SkillBar key={skill.name} name={skill.name} level={skill.level} label={skill.label} />
                                     ))}
                                 </div>
                             </div>
                         ))}
+                    </div>
+
+                    {/* STRENGTHS & CURRENT FOCUS */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                        <div className="p-8 bg-white/[0.02] border border-white/5 rounded-3xl space-y-4">
+                            <div className="flex items-center gap-3 text-accent/40">
+                                <Sparkles size={16} />
+                                <h4 className="text-[10px] uppercase tracking-[0.4em] font-mono">Strengths</h4>
+                            </div>
+                            <p className="text-sm text-neutral-400 leading-relaxed">
+                                Pacing, timing, editorial rhythm, and clean technical execution.
+                            </p>
+                        </div>
+                        <div className="p-8 bg-white/[0.02] border border-white/5 rounded-3xl space-y-4">
+                            <div className="flex items-center gap-3 text-accent/40">
+                                <TrendingUp size={16} />
+                                <h4 className="text-[10px] uppercase tracking-[0.4em] font-mono">Current Focus</h4>
+                            </div>
+                            <p className="text-sm text-neutral-400 leading-relaxed">
+                                Expanding advanced VFX workflows & cinematic color pipelines.
+                            </p>
+                        </div>
                     </div>
 
                     {/* SIGNATURE TECHNIQUES / ANALYSIS */}
