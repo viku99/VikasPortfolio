@@ -1,10 +1,38 @@
-import React from 'react';
-import { motion, Variants } from 'framer-motion';
+
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, Variants, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Github, Linkedin, Instagram, Briefcase, User, Target, Zap, Cpu, Activity, Layout, Sparkles, TrendingUp } from 'lucide-react';
+import { ArrowRight, Github, Linkedin, Instagram, Briefcase, Target, Zap, Cpu, Activity, Layout, Sparkles, TrendingUp, Globe } from 'lucide-react';
 import { SOCIAL_LINKS } from '../constants';
 
 const USER_PHOTO = "https://i.postimg.cc/52X4J8tj/moonji.jpg"; 
+
+const PHILOSOPHY_VARIANTS = [
+  {
+    lang: 'EN',
+    text: (
+      <>
+        I don't just move pixels; I manipulate <span className="text-accent">attention</span>. Every speed ramp and keyframe is a deliberate choice to guide the viewer's heartbeat. I believe that technical mastery is the only way to achieve <span className="text-accent">true creative freedom</span>.
+      </>
+    )
+  },
+  {
+    lang: 'TM',
+    text: (
+      <>
+        Naan pixels-ah mattum nagarthala; ungal <span className="text-accent">attention-ah</span> dhaan control panren. Ovvoru speed ramp-um keyframe-um ungal heartbeat-ah guide panna yedukkura mudivu. <span className="text-accent">Technical mastery</span> dhaan creative freedom-ku ore vazhi-nu namburen.
+      </>
+    )
+  },
+  {
+    lang: 'HI',
+    text: (
+      <>
+        Main sirf pixels nahi hilaata; main aapka <span className="text-accent">attention</span> control karta hoon. Har speed ramp aur keyframe aapki heartbeat ko guide karne ka ek deliberate decision hai. Mera maanna hai ki <span className="text-accent">technical mastery</span> hi creative freedom ka ek matra raasta hai.
+      </>
+    )
+  }
+];
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -84,6 +112,21 @@ const SkillBar: React.FC<{ name: string; level: number; label: string }> = ({ na
 );
 
 const About = () => {
+  const [phiIndex, setPhiIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const intervalRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (!isPaused) {
+      intervalRef.current = window.setInterval(() => {
+        setPhiIndex((prev) => (prev + 1) % PHILOSOPHY_VARIANTS.length);
+      }, 9000); // Increased to 9 seconds for easier reading
+    }
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [isPaused]);
+
   const socialIcons: { [key: string]: React.ReactNode } = {
     LinkedIn: <Linkedin size={18} />,
     Behance: <Briefcase size={18} />,
@@ -153,27 +196,62 @@ const About = () => {
         </div>
       </section>
 
-      {/* CORE PHILOSOPHY */}
-      <section className="py-32 px-6 border-y border-white/5 bg-white/[0.01]">
+      {/* CORE PHILOSOPHY - MULTILINGUAL LOOP */}
+      <section 
+        className="py-32 px-6 border-y border-white/5 bg-white/[0.01]"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+      >
         <div className="container mx-auto">
-            <motion.div 
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                className="grid grid-cols-1 lg:grid-cols-3 gap-16"
-            >
-                <div className="space-y-4">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
+                <div className="space-y-8">
                     <div className="flex items-center gap-3 text-neutral-500">
                         <Target size={18} />
                         <h2 className="text-[12px] uppercase tracking-[0.6em] font-black">Philosophy</h2>
                     </div>
+                    
+                    <div className="flex gap-4">
+                      {PHILOSOPHY_VARIANTS.map((variant, idx) => (
+                        <button 
+                          key={variant.lang}
+                          onClick={() => setPhiIndex(idx)}
+                          className={`text-[9px] font-mono tracking-widest px-3 py-1 rounded-full border transition-all duration-300 ${phiIndex === idx ? 'border-accent text-accent bg-accent/10' : 'border-white/10 text-neutral-600 hover:border-white/30'}`}
+                        >
+                          {variant.lang}
+                        </button>
+                      ))}
+                    </div>
+                    {isPaused && (
+                      <motion.div 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="text-[8px] uppercase tracking-[0.3em] text-accent font-mono"
+                      >
+                        Playback Paused
+                      </motion.div>
+                    )}
                 </div>
-                <div className="lg:col-span-2">
-                    <p className="text-2xl md:text-4xl text-neutral-300 leading-tight tracking-tight font-light">
-                        I don't just move pixels; I manipulate <span className="text-accent">attention</span>. Every speed ramp and keyframe is a deliberate choice to guide the viewer's heartbeat. I believe that technical mastery is the only way to achieve true creative freedom.
-                    </p>
+                
+                <div className="lg:col-span-2 relative min-h-[220px] md:min-h-[180px]">
+                    <AnimatePresence mode="wait">
+                      <motion.p 
+                        key={phiIndex}
+                        initial={{ opacity: 0, y: 5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -5 }}
+                        transition={{ duration: 1.0, ease: [0.76, 0, 0.24, 1] }}
+                        className="text-2xl md:text-4xl text-neutral-300 leading-tight tracking-tight font-light"
+                      >
+                        {PHILOSOPHY_VARIANTS[phiIndex].text}
+                      </motion.p>
+                    </AnimatePresence>
+                    
+                    <div className="absolute -bottom-8 left-0 flex items-center gap-3 text-neutral-800">
+                      <Globe size={12} className="animate-pulse" />
+                      <span className="text-[8px] uppercase tracking-[0.5em] font-mono">Archive_Relay_{PHILOSOPHY_VARIANTS[phiIndex].lang}</span>
+                    </div>
                 </div>
-            </motion.div>
+            </div>
         </div>
       </section>
 

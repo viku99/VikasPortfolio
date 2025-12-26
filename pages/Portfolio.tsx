@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { motion, Variants, AnimatePresence, useScroll, useTransform } from 'framer-motion';
-import { Search, ChevronDown, Lock, X, Loader2 } from 'lucide-react';
+import { motion, Variants, AnimatePresence } from 'framer-motion';
+import { Search, ChevronDown, X, Loader2 } from 'lucide-react';
 import { PROJECTS } from '../constants';
 import ProjectCard from '../components/ProjectCard';
 
@@ -9,7 +9,6 @@ const containerVariants: Variants = {
   visible: {
     opacity: 1,
     transition: {
-      delay: 0.1,
       staggerChildren: 0.1,
     },
   },
@@ -34,14 +33,6 @@ const sortOptions = [
 ];
 
 const Portfolio = () => {
-  // PERSISTENCE: Check if already unlocked in this session
-  const [isUnlocked, setIsUnlocked] = useState(() => {
-    if (typeof window !== 'undefined') {
-        return sessionStorage.getItem('portfolio_unlocked') === 'true';
-    }
-    return false;
-  });
-
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('default');
   const [selectedTech, setSelectedTech] = useState<string | null>(null);
@@ -50,26 +41,6 @@ const Portfolio = () => {
   
   const sortRef = useRef<HTMLDivElement>(null);
   const techRef = useRef<HTMLDivElement>(null);
-
-  const { scrollY } = useScroll();
-  
-  // Transition logic for the initial unlock experience
-  const overlayOpacity = useTransform(scrollY, [0, 400], [1, 0]);
-  const overlayScale = useTransform(scrollY, [0, 400], [1, 1.05]);
-  const contentY = useTransform(scrollY, [0, 400], [100, 0]);
-
-  // Update unlock state and session storage on scroll
-  useEffect(() => {
-    if (isUnlocked) return; // Don't track if already permanently unlocked for this session
-
-    const unsubscribe = scrollY.on('change', v => {
-      if (v > 300) {
-        setIsUnlocked(true);
-        sessionStorage.setItem('portfolio_unlocked', 'true');
-      }
-    });
-    return () => unsubscribe();
-  }, [scrollY, isUnlocked]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -112,82 +83,29 @@ const Portfolio = () => {
       default: return results;
     }
   }, [searchQuery, sortBy, selectedTech]);
-  
+
   const techFilterLabel = selectedTech ? selectedTech : 'Filter Tech';
   const sortLabel = sortOptions.find(opt => opt.value === sortBy)?.label || 'Sort';
 
-  // Determine if we should show the animated entry based on session storage
-  const isFirstVisitThisSession = typeof window !== 'undefined' && sessionStorage.getItem('portfolio_unlocked') !== 'true';
-
   return (
-    <div className={`relative bg-background ${isFirstVisitThisSession ? 'min-h-[200vh]' : 'min-h-screen'}`}>
-      
-      {/* 
-          CINEMATIC OVERLAY 
-          Only renders if the user hasn't scrolled past it in this session 
-      */}
-      {isFirstVisitThisSession && (
+    <div className="bg-background min-h-screen pt-40">
+      <div className="container mx-auto px-6 md:px-8 pb-32">
         <motion.div 
-            style={{ 
-                opacity: overlayOpacity, 
-                scale: overlayScale,
-                pointerEvents: isUnlocked ? 'none' : 'auto' 
-            }}
-            className="fixed inset-0 flex flex-col items-center justify-center bg-background z-40 transition-colors duration-500"
-        >
-            <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="text-center px-6"
-            >
-            <div className="relative mb-8">
-                <motion.div 
-                    animate={{ opacity: [0.2, 0.5, 0.2] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                    className="absolute inset-0 bg-accent blur-3xl opacity-20 rounded-full"
-                />
-                <Lock className="w-10 h-10 text-accent mb-2 mx-auto relative z-10" />
-            </div>
-            
-            <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-4 uppercase text-accent">
-                Accessing Archive
-            </h1>
-            
-            <div className="flex items-center justify-center gap-6">
-                <div className="h-[1px] w-8 md:w-16 bg-neutral-800"></div>
-                <span className="text-[10px] md:text-xs uppercase tracking-[0.5em] text-neutral-500 font-mono">
-                    Decryption in progress... Scroll
-                </span>
-                <div className="h-[1px] w-8 md:w-16 bg-neutral-800"></div>
-            </div>
-            </motion.div>
-
-            <motion.div 
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="absolute bottom-12"
-            >
-            <ChevronDown className="w-6 h-6 text-neutral-700" />
-            </motion.div>
-        </motion.div>
-      )}
-
-      {/* 
-          PORTFOLIO CONTENT 
-          If already unlocked, remove the top padding
-      */}
-      <motion.div 
-        style={isFirstVisitThisSession ? { y: contentY } : {}}
-        className={`container mx-auto px-6 md:px-8 pb-32 relative z-30 ${isFirstVisitThisSession ? 'pt-[60vh]' : 'pt-40'}`}
-      >
-        <motion.div 
-          initial={isFirstVisitThisSession ? "hidden" : "visible"} 
-          animate={isUnlocked ? "visible" : (isFirstVisitThisSession ? "hidden" : "visible")}
+          initial="hidden" 
+          animate="visible"
           variants={containerVariants}
         >
+          {/* Header Section */}
+          <div className="mb-20 text-center">
+              <motion.span variants={itemVariants} className="text-[10px] uppercase tracking-[0.8em] text-neutral-500 font-mono mb-4 block">Archive Directory // Vol 1</motion.span>
+              <motion.h1 variants={itemVariants} className="text-5xl md:text-8xl font-black uppercase tracking-tighter leading-none mb-12">
+                  Selected <br /> <span className="text-neutral-700">Works</span>
+              </motion.h1>
+          </div>
+
           {/* Controls Bar */}
           <div className="mb-20 flex flex-col md:flex-row gap-4 items-center justify-center max-w-5xl mx-auto">
-            <div className="relative w-full md:flex-grow">
+            <motion.div variants={itemVariants} className="relative w-full md:flex-grow">
               <input
                 type="text"
                 placeholder="Search work..."
@@ -204,10 +122,9 @@ const Portfolio = () => {
                   <X size={16} />
                 </button>
               )}
-            </div>
+            </motion.div>
             
-            <div className="flex gap-3 w-full md:w-auto">
-              {/* Tech Filter Dropdown */}
+            <motion.div variants={itemVariants} className="flex gap-3 w-full md:w-auto">
               <div className="relative flex-grow md:w-auto" ref={techRef}>
                 <button
                     onClick={() => setIsTechOpen(!isTechOpen)}
@@ -249,7 +166,6 @@ const Portfolio = () => {
                 </AnimatePresence>
               </div>
 
-              {/* Sort Dropdown */}
               <div className="relative flex-grow md:w-auto" ref={sortRef}>
                 <button
                     onClick={() => setIsSortOpen(!isSortOpen)}
@@ -279,7 +195,7 @@ const Portfolio = () => {
                     )}
                 </AnimatePresence>
               </div>
-            </div>
+            </motion.div>
           </div>
 
           {/* Project List */}
@@ -333,7 +249,7 @@ const Portfolio = () => {
               )}
           </motion.div>
         </motion.div>
-      </motion.div>
+      </div>
     </div>
   );
 };

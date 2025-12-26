@@ -12,33 +12,36 @@ const CustomCursor = () => {
       height: 32,
       width: 32,
       backgroundColor: 'rgba(255, 255, 255, 0.1)',
-      border: '1px solid rgba(255, 255, 255, 0.5)',
-      mixBlendMode: 'difference',
+      border: '1px solid rgba(255, 255, 255, 0.3)',
+      mixBlendMode: 'difference' as const,
     },
     link: {
-      height: 64,
-      width: 64,
-      backgroundColor: 'rgba(255, 255, 255, 0.2)',
-      border: '1px solid rgba(255, 255, 255, 0.8)',
-      mixBlendMode: 'difference',
+      height: 80,
+      width: 80,
+      backgroundColor: 'rgba(255, 255, 255, 0.15)',
+      border: '1px solid rgba(255, 255, 255, 0.6)',
+      mixBlendMode: 'difference' as const,
     },
     text: {
-        height: 8,
-        width: 8,
-        backgroundColor: 'rgba(255, 255, 255, 1)',
-        mixBlendMode: 'difference',
+      height: 12,
+      width: 12,
+      backgroundColor: 'rgba(255, 255, 255, 1)',
+      mixBlendMode: 'difference' as const,
     },
   };
 
   return (
     <motion.div
-      className="fixed top-0 left-0 rounded-full pointer-events-none z-[9999]"
+      className="fixed top-0 left-0 rounded-full pointer-events-none z-[9999] hidden md:block"
       variants={variants}
       animate={cursorVariant}
-      transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-      initial={false}
-      // FIX: Merged duplicate `style` props into one to fix a JSX error.
-      style={{ left: x, top: y, translateX: '-50%', translateY: '-50%' }}
+      transition={{ type: 'spring', stiffness: 500, damping: 35, mass: 0.5 }}
+      style={{ 
+        left: `${x}px`, 
+        top: `${y}px`, 
+        translateX: '-50%', 
+        translateY: '-50%' 
+      }}
     />
   );
 };
