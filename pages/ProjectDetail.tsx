@@ -2,7 +2,7 @@
 import React, { useMemo, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion, Variants } from 'framer-motion';
-import { ArrowLeft, ArrowRight, Layers, PenTool, FileText, ChevronRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Layers, PenTool, FileText, ChevronRight, Activity, Terminal, Sparkles } from 'lucide-react';
 import { PROJECTS } from '../constants';
 import VideoPlayer from '../components/VideoPlayer';
 
@@ -45,7 +45,7 @@ const ProjectDetail = () => {
       animate="visible" 
       className="bg-background text-accent min-h-screen selection:bg-accent selection:text-background"
     >
-      {/* 1. PRIMARY VIDEO PLAYER (START) */}
+      {/* 1. PRIMARY VIDEO PLAYER */}
       <section className="pt-24 md:pt-32 px-6">
         <div className="container mx-auto">
             <motion.div 
@@ -57,7 +57,7 @@ const ProjectDetail = () => {
         </div>
       </section>
 
-      {/* 2. PROJECT TITLE (DIRECTLY BELOW VIDEO) */}
+      {/* 2. PROJECT TITLE */}
       <section className="mt-12 md:mt-20 px-6">
         <div className="container mx-auto">
             <motion.div variants={fadeUp} className="max-w-7xl">
@@ -85,7 +85,7 @@ const ProjectDetail = () => {
                 <div className="space-y-4">
                     <div className="flex items-center gap-3 text-neutral-500">
                         <Layers size={18} />
-                        <h2 className="text-[12px] uppercase tracking-[0.6em] font-black">What softwares I used</h2>
+                        <h2 className="text-[12px] uppercase tracking-[0.6em] font-black">Software Stack</h2>
                     </div>
                     <div className="h-[1px] w-12 bg-accent/20" />
                 </div>
@@ -95,7 +95,7 @@ const ProjectDetail = () => {
                         {project.details.techStack.map((tech) => (
                             <div 
                                 key={tech}
-                                className="px-10 py-6 bg-primary border border-white/10 rounded-2xl hover:border-accent/40 transition-all group flex items-center gap-4"
+                                className="px-8 py-5 bg-primary border border-white/10 rounded-2xl hover:border-accent/40 transition-all group flex items-center gap-4"
                             >
                                 <div className="w-2 h-2 rounded-full bg-accent/20 group-hover:bg-accent transition-colors" />
                                 <span className="text-sm font-mono uppercase tracking-[0.3em] text-neutral-400 group-hover:text-accent">
@@ -109,8 +109,78 @@ const ProjectDetail = () => {
         </div>
       </section>
 
-      {/* 4. HOW I EDITED */}
-      <section className="py-24 px-6 border-y border-white/5">
+      {/* 4. WHAT EDITING TECHNIQUES I USED */}
+      <section className="py-24 px-6 border-t border-white/5 bg-black/20">
+        <div className="container mx-auto">
+            <motion.div 
+                variants={fadeUp}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                className="grid grid-cols-1 lg:grid-cols-3 gap-16"
+            >
+                <div className="space-y-4">
+                    <div className="flex items-center gap-3 text-neutral-500">
+                        <Sparkles size={18} />
+                        <h2 className="text-[12px] uppercase tracking-[0.6em] font-black">Editing Techniques</h2>
+                    </div>
+                    <div className="h-[1px] w-12 bg-accent/20" />
+                </div>
+                
+                <div className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {project.details.techniques?.map((tech) => (
+                            <div key={tech} className="flex items-center gap-4 p-5 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] transition-colors">
+                                <Activity size={14} className="text-accent/30" />
+                                <span className="text-xs uppercase tracking-widest font-mono text-neutral-400">{tech}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </motion.div>
+        </div>
+      </section>
+
+      {/* 5. ANALYSIS & DEEP DIVE */}
+      <section className="py-24 px-6 border-t border-white/5">
+        <div className="container mx-auto">
+            <motion.div 
+                variants={fadeUp}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                className="grid grid-cols-1 lg:grid-cols-3 gap-16"
+            >
+                <div className="space-y-4">
+                    <div className="flex items-center gap-3 text-neutral-500">
+                        <Terminal size={18} />
+                        <h2 className="text-[12px] uppercase tracking-[0.6em] font-black">Process Analysis</h2>
+                    </div>
+                    <div className="h-[1px] w-12 bg-accent/20" />
+                </div>
+                
+                <div className="lg:col-span-2">
+                    <div className="p-10 rounded-3xl bg-white/[0.03] border border-white/5 relative overflow-hidden group">
+                        <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
+                            <Terminal size={120} />
+                        </div>
+                        <div className="relative z-10 space-y-6">
+                            <div className="flex items-center gap-4">
+                                <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+                                <h4 className="text-[10px] uppercase tracking-[0.4em] text-accent/60 font-mono">Detailed Post-Mortem</h4>
+                            </div>
+                            <p className="text-xl md:text-2xl leading-relaxed text-neutral-300 font-light italic">
+                                "{project.details.analysis}"
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </motion.div>
+        </div>
+      </section>
+
+      {/* 6. HOW I EDITED (WORKFLOW) */}
+      <section className="py-24 px-6 border-y border-white/5 bg-white/[0.01]">
         <div className="container mx-auto">
             <motion.div 
                 variants={fadeUp}
@@ -128,18 +198,16 @@ const ProjectDetail = () => {
                 </div>
                 
                 <div className="lg:col-span-2">
-                    <div className="relative">
-                        <p className="text-2xl md:text-4xl leading-[1.3] text-neutral-200 font-light tracking-tight">
-                            {project.solution || project.challenge}
-                        </p>
-                    </div>
+                    <p className="text-2xl md:text-4xl leading-[1.3] text-neutral-200 font-light tracking-tight">
+                        {project.solution || project.challenge}
+                    </p>
                 </div>
             </motion.div>
         </div>
       </section>
 
-      {/* 5. VIDEO CONTENT */}
-      <section className="py-24 px-6 bg-white/[0.01]">
+      {/* 7. VIDEO CONTENT */}
+      <section className="py-24 px-6">
         <div className="container mx-auto">
             <motion.div 
                 variants={fadeUp}
@@ -167,7 +235,7 @@ const ProjectDetail = () => {
         </div>
       </section>
 
-      {/* 6. NEXT PROJECT LINK (DOWNSIDE) */}
+      {/* NEXT PROJECT LINK */}
       <section className="mt-32">
         <Link 
             to={`/portfolio/${nextProject.id}`} 

@@ -18,6 +18,8 @@ export interface Project {
     techStack: string[];
     year: number;
     liveUrl?: string;
+    techniques?: string[];
+    analysis?: string;
   };
   challenge?: string;
   solution?: string;
