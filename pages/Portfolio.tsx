@@ -1,7 +1,6 @@
-
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { motion, Variants, AnimatePresence, useScroll, useTransform } from 'framer-motion';
-import { Search, ChevronDown, Lock, X } from 'lucide-react';
+import { Search, ChevronDown, Lock, X, Loader2 } from 'lucide-react';
 import { PROJECTS } from '../constants';
 import ProjectCard from '../components/ProjectCard';
 
@@ -293,6 +292,31 @@ const Portfolio = () => {
                       <ProjectCard project={project} />
                   </motion.div>
               ))}
+              
+              {displayedProjects.length > 0 && (
+                <motion.div 
+                  variants={itemVariants}
+                  className="w-full pt-12 flex flex-col items-center gap-6 opacity-30 group"
+                >
+                    <div className="relative">
+                      <motion.div 
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                        className="text-accent/20"
+                      >
+                        <Loader2 size={64} strokeWidth={0.5} />
+                      </motion.div>
+                    </div>
+                    <div className="text-center space-y-2">
+                      <h4 className="text-[10px] uppercase tracking-[0.5em] font-mono text-neutral-400 group-hover:text-accent transition-colors">
+                        More projects are getting cooked
+                      </h4>
+                      <p className="text-[8px] uppercase tracking-[0.3em] text-neutral-600 font-mono">
+                        System update in progress
+                      </p>
+                    </div>
+                </motion.div>
+              )}
               
               {displayedProjects.length === 0 && (
                    <div className="text-center py-40 w-full">
