@@ -1,4 +1,3 @@
-
 import { Project } from './types';
 
 // ============================================================================
@@ -14,8 +13,8 @@ export const SOCIAL_LINKS = [
 
 export const SITE_INFO = {
   name: "VIKAS",
-  role: "Motion Director & Creative Technologist",
-  tagline: "A motion-first developer crafting cinematic digital experiences.",
+  role: "Motion-First Visual Storyteller",
+  tagline: "Designing attention through movement.",
   showreelId: "CPnMek8iU1U"
 };
 

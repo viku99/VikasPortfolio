@@ -1,9 +1,8 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, Variants, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Github, Linkedin, Instagram, Briefcase, Target, Zap, Cpu, Activity, Layout, Sparkles, TrendingUp, Globe } from 'lucide-react';
-import { SOCIAL_LINKS } from '../constants';
+import { SOCIAL_LINKS, SITE_INFO } from '../constants';
 
 const USER_PHOTO = "https://i.postimg.cc/52X4J8tj/moonji.jpg"; 
 
@@ -171,7 +170,7 @@ const About = () => {
                             Vikas <br /> <span className="text-neutral-700">Bala</span>
                         </h1>
                         <p className="text-xl md:text-3xl text-neutral-400 font-light tracking-tight max-w-xl leading-relaxed">
-                            A <span className="text-accent">Motion Director</span> obsessed with the marriage of frame-perfect timing and cinematic emotion.
+                            A <span className="text-accent">{SITE_INFO.role}</span> obsessed with the marriage of frame-perfect timing and cinematic emotion.
                         </p>
                         
                         <div className="flex flex-wrap gap-8 pt-8">
