@@ -1,24 +1,18 @@
-import React, { useMemo } from 'react';
+
+import React, { useMemo, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion, Variants } from 'framer-motion';
-import { ArrowLeft, ExternalLink, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Layers, PenTool, FileText, ChevronRight } from 'lucide-react';
 import { PROJECTS } from '../constants';
 import VideoPlayer from '../components/VideoPlayer';
 
-const containerVariants: Variants = {
-    hidden: { opacity: 0 },
+const fadeUp: Variants = {
+    hidden: { opacity: 0, y: 30 },
     visible: { 
         opacity: 1, 
-        transition: { 
-            staggerChildren: 0.15,
-            delayChildren: 0.3,
-        } 
+        y: 0, 
+        transition: { duration: 1, ease: [0.22, 1, 0.36, 1] } 
     }
-};
-
-const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } }
 };
 
 const ProjectDetail = () => {
@@ -32,188 +26,182 @@ const ProjectDetail = () => {
   const project = projectIndex !== -1 ? PROJECTS[projectIndex] : null;
   const nextProject = project ? PROJECTS[(projectIndex + 1) % PROJECTS.length] : null;
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [projectId]);
+
   if (!project || !nextProject) {
     return (
-      <div className="min-h-screen flex items-center justify-center flex-col gap-4">
-        <p>Project not found.</p>
-        <Link to="/portfolio" className="text-neutral-400 hover:text-accent transition-colors">Back to portfolio</Link>
+      <div className="min-h-screen flex items-center justify-center flex-col gap-4 bg-background">
+        <p className="text-[10px] uppercase tracking-[0.4em] text-neutral-600 font-mono">Archive Entry Missing</p>
+        <Link to="/portfolio" className="text-accent border-b border-accent/20 pb-1 text-xs uppercase tracking-widest">Return to Base</Link>
       </div>
     );
   }
 
   return (
-    <motion.div initial="hidden" animate="visible" variants={containerVariants}>
-      {/* Hero Section */}
-      <motion.div className="relative w-full h-screen" variants={itemVariants}>
-        <motion.div 
-            className="absolute inset-0"
-            layoutId={`project-container-${project.id}`}
-            transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
-        >
-             <VideoPlayer {...project.heroVideo} showControls={project.heroVideo.type === 'youtube'} />
-             <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-transparent"></div>
-        </motion.div>
-
-        <div className="absolute bottom-0 left-0 w-full p-6 md:p-12 text-white">
-            <div className="container mx-auto">
-                 <motion.h1 
-                    className="text-5xl md:text-8xl font-black tracking-tighter"
-                    initial={{ opacity: 0, y: 40 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.5, duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                 >
-                    {project.title}
-                </motion.h1>
-                <motion.p 
-                  className="text-lg md:text-xl text-neutral-300 mt-2 font-light"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.7, duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                >
-                    {project.category}
-                </motion.p>
-            </div>
-        </div>
-        
-        <Link
-            to="/portfolio"
-            className="absolute top-24 left-6 md:left-12 flex items-center gap-2 text-white bg-black/30 backdrop-blur-sm px-4 py-2 rounded-full hover:bg-black/50 transition-colors z-10"
-        >
-            <ArrowLeft size={16} />
-            Back to Works
-        </Link>
-      </motion.div>
-      
-      {/* Main Content */}
-      <div className="container mx-auto px-6 md:px-8 py-24 md:py-32">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
-
-            {/* Left Column / Main Content */}
-            <motion.div className="lg:col-span-8 space-y-20" variants={containerVariants}>
-                {/* About Section */}
-                <motion.div variants={itemVariants}>
-                    <h2 className="text-3xl font-bold mb-6 text-neutral-100">About the Project</h2>
-                    <p className="text-neutral-300 leading-relaxed text-lg">{project.description}</p>
-                </motion.div>
-
-                {/* Challenge & Solution */}
-                {(project.challenge || project.solution) && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                        {project.challenge && (
-                            <motion.div variants={itemVariants}>
-                                <h3 className="text-2xl font-semibold text-accent mb-4">The Challenge</h3>
-                                <p className="text-neutral-400 leading-relaxed">{project.challenge}</p>
-                            </motion.div>
-                        )}
-                        {project.solution && (
-                             <motion.div variants={itemVariants}>
-                                <h3 className="text-2xl font-semibold text-accent mb-4">The Solution</h3>
-                                <p className="text-neutral-400 leading-relaxed">{project.solution}</p>
-                            </motion.div>
-                        )}
-                    </div>
-                )}
-            </motion.div>
-
-            {/* Right Column / Details Sidebar */}
+    <motion.div 
+      initial="hidden" 
+      animate="visible" 
+      className="bg-background text-accent min-h-screen selection:bg-accent selection:text-background"
+    >
+      {/* 1. PRIMARY VIDEO PLAYER (START) */}
+      <section className="pt-24 md:pt-32 px-6">
+        <div className="container mx-auto">
             <motion.div 
-                className="lg:col-span-4 lg:sticky lg:top-40 h-fit" 
-                variants={itemVariants}
+                layoutId={`project-container-${project.id}`}
+                className="relative aspect-video w-full rounded-2xl overflow-hidden shadow-[0_60px_120px_-20px_rgba(0,0,0,1)] bg-primary border border-white/5"
+            >
+                <VideoPlayer {...project.heroVideo} showControls={true} />
+            </motion.div>
+        </div>
+      </section>
+
+      {/* 2. PROJECT TITLE (DIRECTLY BELOW VIDEO) */}
+      <section className="mt-12 md:mt-20 px-6">
+        <div className="container mx-auto">
+            <motion.div variants={fadeUp} className="max-w-7xl">
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
+                    <h1 className="text-5xl md:text-[9vw] font-black tracking-tighter leading-[0.85] uppercase">
+                        {project.title}
+                    </h1>
+                </div>
+            </motion.div>
+        </div>
+      </section>
+
+      <div className="mt-32 border-t border-white/5" />
+
+      {/* 3. WHAT SOFTWARES I USED */}
+      <section className="py-24 px-6 bg-white/[0.01]">
+        <div className="container mx-auto">
+            <motion.div 
+                variants={fadeUp}
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: true, amount: 0.5 }}
+                viewport={{ once: true }}
+                className="grid grid-cols-1 lg:grid-cols-3 gap-16"
             >
-                <div className="bg-primary/50 border border-secondary rounded-lg p-6 space-y-6">
-                    <div>
-                        <h3 className="font-semibold text-accent mb-2 uppercase text-sm tracking-widest">Role</h3>
-                        <p className="text-neutral-300">{project.details.role}</p>
+                <div className="space-y-4">
+                    <div className="flex items-center gap-3 text-neutral-500">
+                        <Layers size={18} />
+                        <h2 className="text-[12px] uppercase tracking-[0.6em] font-black">What softwares I used</h2>
                     </div>
-                    <div className="border-t border-secondary/50"></div>
-                    <div>
-                        <h3 className="font-semibold text-accent mb-2 uppercase text-sm tracking-widest">Year</h3>
-                        <p className="text-neutral-300">{project.details.year}</p>
-                    </div>
-                     <div className="border-t border-secondary/50"></div>
-                    <div>
-                        <h3 className="font-semibold text-accent mb-3 uppercase text-sm tracking-widest">Tech Stack</h3>
-                        <ul className="flex flex-wrap gap-2">
-                            {project.details.techStack.map(tech => (
-                                <li key={tech} className="bg-secondary text-neutral-300 text-xs font-mono px-3 py-1.5 rounded">
-                                    {tech}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                    {project.details.liveUrl && (
-                        <>
-                            <div className="border-t border-secondary/50"></div>
-                            <a 
-                                href={project.details.liveUrl} 
-                                target="_blank" 
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center gap-2 text-neutral-300 hover:text-accent transition-colors group"
+                    <div className="h-[1px] w-12 bg-accent/20" />
+                </div>
+                
+                <div className="lg:col-span-2">
+                    <div className="flex flex-wrap gap-5">
+                        {project.details.techStack.map((tech) => (
+                            <div 
+                                key={tech}
+                                className="px-10 py-6 bg-primary border border-white/10 rounded-2xl hover:border-accent/40 transition-all group flex items-center gap-4"
                             >
-                                View Live Site <ExternalLink size={16} className="group-hover:translate-x-1 transition-transform" />
-                            </a>
-                        </>
-                    )}
+                                <div className="w-2 h-2 rounded-full bg-accent/20 group-hover:bg-accent transition-colors" />
+                                <span className="text-sm font-mono uppercase tracking-[0.3em] text-neutral-400 group-hover:text-accent">
+                                    {tech}
+                                </span>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </motion.div>
         </div>
-      </div>
+      </section>
 
-       {/* Gallery Section */}
-      {project.gallery && project.gallery.length > 0 && (
-        <motion.div 
-            className="pb-24 md:pb-32" 
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.1 }}
-        >
-          <div className="container mx-auto px-6 md:px-8">
-            <motion.h2 variants={itemVariants} className="text-4xl font-bold mb-12 text-center">Visual Showcase</motion.h2>
-            <motion.div variants={containerVariants} className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {project.gallery.map((item, index) => (
-                <motion.div
-                  key={index}
-                  variants={itemVariants}
-                  className="bg-primary rounded-lg overflow-hidden aspect-video"
-                >
-                  {item.type === 'image' ? (
-                    <img src={item.src} alt={`${project.title} gallery image ${index + 1}`} className="w-full h-full object-cover" />
-                  ) : (
-                    <VideoPlayer type="local" src={item.src} />
-                  )}
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </motion.div>
-      )}
-
-      {/* Next Project Link */}
-      <motion.div 
-        className="container mx-auto px-6 md:px-8 pb-24"
-        initial={{opacity: 0}}
-        whileInView={{opacity: 1}}
-        viewport={{once: true, amount: 0.3}}
-        transition={{duration: 1}}
-      >
-        <Link to={`/portfolio/${nextProject.id}`} className="block group relative aspect-video rounded-lg overflow-hidden bg-primary">
-            <img src={nextProject.imageUrl} alt={nextProject.title} className="w-full h-full object-cover transition-transform duration-700 ease-in-out group-hover:scale-105" />
-            <div className="absolute inset-0 bg-black/60"></div>
-            <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white p-4">
-                <p className="uppercase tracking-widest text-sm text-neutral-400 mb-2">Next Project</p>
-                <h3 className="text-4xl md:text-6xl font-bold tracking-tight">{nextProject.title}</h3>
-                <div className="mt-8">
-                    <div className="inline-flex items-center justify-center w-16 h-16 border-2 border-white rounded-full transition-transform duration-500 ease-in-out group-hover:scale-110 group-hover:rotate-45">
-                        <ArrowRight size={32} />
+      {/* 4. HOW I EDITED */}
+      <section className="py-24 px-6 border-y border-white/5">
+        <div className="container mx-auto">
+            <motion.div 
+                variants={fadeUp}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                className="grid grid-cols-1 lg:grid-cols-3 gap-16"
+            >
+                <div className="space-y-4">
+                    <div className="flex items-center gap-3 text-neutral-500">
+                        <PenTool size={18} />
+                        <h2 className="text-[12px] uppercase tracking-[0.6em] font-black">How I Edited</h2>
                     </div>
+                    <div className="h-[1px] w-12 bg-accent/20" />
+                </div>
+                
+                <div className="lg:col-span-2">
+                    <div className="relative">
+                        <p className="text-2xl md:text-4xl leading-[1.3] text-neutral-200 font-light tracking-tight">
+                            {project.solution || project.challenge}
+                        </p>
+                    </div>
+                </div>
+            </motion.div>
+        </div>
+      </section>
+
+      {/* 5. VIDEO CONTENT */}
+      <section className="py-24 px-6 bg-white/[0.01]">
+        <div className="container mx-auto">
+            <motion.div 
+                variants={fadeUp}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                className="grid grid-cols-1 lg:grid-cols-3 gap-16"
+            >
+                <div className="space-y-4">
+                    <div className="flex items-center gap-3 text-neutral-500">
+                        <FileText size={18} />
+                        <h2 className="text-[12px] uppercase tracking-[0.6em] font-black">Video Content</h2>
+                    </div>
+                    <div className="h-[1px] w-12 bg-accent/20" />
+                </div>
+                
+                <div className="lg:col-span-2">
+                    <div className="max-w-4xl">
+                        <p className="text-lg md:text-2xl leading-relaxed text-neutral-400 font-normal">
+                            {project.description}
+                        </p>
+                    </div>
+                </div>
+            </motion.div>
+        </div>
+      </section>
+
+      {/* 6. NEXT PROJECT LINK (DOWNSIDE) */}
+      <section className="mt-32">
+        <Link 
+            to={`/portfolio/${nextProject.id}`} 
+            className="group block relative overflow-hidden bg-black h-[70vh] flex items-center justify-center"
+        >
+            <div className="absolute inset-0 z-0">
+                <img 
+                    src={nextProject.imageUrl} 
+                    alt={nextProject.title} 
+                    className="w-full h-full object-cover opacity-10 grayscale group-hover:scale-110 group-hover:grayscale-0 group-hover:opacity-40 transition-all duration-[3s] ease-out"
+                />
+            </div>
+            
+            <div className="relative z-10 flex flex-col items-center gap-8 px-6 text-center">
+                <div className="flex items-center gap-4 text-accent/30 group-hover:text-accent transition-colors">
+                    <span className="text-[10px] uppercase tracking-[1em]">Next Artifact</span>
+                    <ChevronRight size={14} />
+                </div>
+                <h3 className="text-4xl md:text-8xl font-black uppercase tracking-tighter group-hover:tracking-normal transition-all duration-1000">
+                    {nextProject.title}
+                </h3>
+                <div className="mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-1000">
+                    <div className="h-[1px] w-40 bg-accent/50" />
                 </div>
             </div>
         </Link>
-      </motion.div>
+      </section>
+
+      <footer className="py-20 flex flex-col items-center gap-10">
+        <Link to="/portfolio" className="group flex items-center gap-4 text-[10px] uppercase tracking-[0.5em] text-neutral-600 hover:text-accent transition-all">
+            <ArrowLeft size={12} className="group-hover:-translate-x-2 transition-transform" />
+            Return to Portfolio Index
+        </Link>
+      </footer>
     </motion.div>
   );
 };

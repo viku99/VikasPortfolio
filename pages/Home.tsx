@@ -1,7 +1,9 @@
+
 import React, { useEffect, useRef } from 'react';
 import { motion, Variants, useMotionValue, useTransform } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { ChevronDown } from 'lucide-react';
+import { SITE_INFO } from '../constants';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -56,14 +58,14 @@ const Home = () => {
   const rotateX = useTransform(mouseY, [0, typeof window !== 'undefined' ? window.innerHeight : 0], [10, -10]);
   const rotateY = useTransform(mouseX, [0, typeof window !== 'undefined' ? window.innerWidth : 0], [-10, 10]);
 
-  const name = "VIKAS";
+  const name = SITE_INFO.name;
 
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.08,
+        staggerChildren: 0.1,
         delayChildren: 0.5,
       },
     },
@@ -89,7 +91,7 @@ const Home = () => {
       <motion.div style={{ perspective: '1000px' }}>
           <motion.div style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}>
             <motion.h1
-              className="text-[10vw] md:text-[12vw] lg:text-[10rem] font-black tracking-tighter text-accent leading-none"
+              className="text-[12vw] md:text-[15vw] lg:text-[12rem] font-black tracking-tighter text-accent leading-none"
               variants={containerVariants}
               initial="hidden"
               animate="visible"
@@ -101,14 +103,17 @@ const Home = () => {
                 </motion.span>
               ))}
             </motion.h1>
-            <motion.p 
-              className="mt-6 text-lg md:text-2xl text-neutral-400 max-w-3xl font-light"
+            <motion.div 
+              className="mt-6 flex flex-col gap-2"
               variants={subtitleVariants}
               initial="hidden"
               animate="visible"
             >
-              A motion-first developer crafting cinematic digital experiences.
-            </motion.p>
+              <p className="text-xl md:text-3xl text-neutral-100 font-bold uppercase tracking-widest">{SITE_INFO.role}</p>
+              <p className="text-lg md:text-2xl text-neutral-400 max-w-3xl font-light mx-auto">
+                {SITE_INFO.tagline}
+              </p>
+            </motion.div>
         </motion.div>
       </motion.div>
       
@@ -122,8 +127,10 @@ const Home = () => {
             <motion.div
               animate={{ y: [0, 10, 0] }}
               transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+              className="flex flex-col items-center gap-2"
             >
-              <ChevronDown className="w-8 h-8 text-neutral-600" />
+              <span className="text-[10px] uppercase tracking-[0.3em] text-neutral-500">Scroll to enter</span>
+              <ChevronDown className="w-6 h-6 text-neutral-600" />
             </motion.div>
         </Link>
       </motion.div>

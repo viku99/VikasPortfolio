@@ -1,8 +1,8 @@
+
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Project } from '../types';
-import VideoPlayer from './VideoPlayer';
 import { ArrowUpRight } from 'lucide-react';
 
 interface ProjectCardProps {
@@ -16,94 +16,66 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
   return (
     <Link
       to={`/portfolio/${project.id}`}
-      className="block group"
+      className="block group relative"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <motion.div 
         layoutId={`project-container-${project.id}`} 
-        className="relative aspect-[4/3] overflow-hidden bg-primary rounded-lg"
-        whileHover={{
-          y: -8,
-          boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.1)'
-        }}
-        transition={{ duration: 0.3, ease: 'easeOut' }}
+        className="relative aspect-video overflow-hidden bg-[#0d0d0d] rounded-2xl ring-1 ring-white/5 group-hover:ring-white/10 transition-all duration-700 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.6)]"
       >
-        {!isImageLoaded && !isHovered && (
-          <div className="absolute inset-0 bg-secondary animate-pulse" />
-        )}
-        <div
-          className="absolute inset-0"
-        >
-          <AnimatePresence>
-            {!isHovered && (
-              <motion.img
-                src={project.imageUrl}
-                alt={project.title}
-                className="w-full h-full object-cover"
-                loading="lazy"
-                onLoad={() => setIsImageLoaded(true)}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: isImageLoaded ? 1 : 0 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.5, ease: 'easeInOut' }}
-                layoutId={`project-image-${project.id}`}
-              />
-            )}
-          </AnimatePresence>
-          <AnimatePresence>
-            {isHovered && (
-               <motion.div
-                className="absolute inset-0"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.5, ease: 'easeInOut' }}
-              >
-                <VideoPlayer {...project.cardPreviewVideo} zoomOnHover={true} />
-                 <div className="absolute inset-0 bg-black/40" />
-              </motion.div>
-            )}
-          </AnimatePresence>
+        <div className="absolute inset-0 z-0">
+          <motion.img
+            src={project.imageUrl}
+            alt={project.title}
+            className="w-full h-full object-cover grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] scale-[1.01] group-hover:scale-105"
+            loading="lazy"
+            onLoad={() => setIsImageLoaded(true)}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: isImageLoaded ? (isHovered ? 1 : 0.5) : 0 }}
+            layoutId={`project-image-${project.id}`}
+          />
         </div>
         
-        <AnimatePresence>
-          {isHovered && (
-            <motion.div
-              className="absolute bottom-0 left-0 p-5 text-accent"
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: 20, opacity: 0 }}
-              transition={{ ease: 'easeOut', duration: 0.3 }}
-            >
-              <motion.h3 
-                className="text-xl font-bold"
-                initial={{ y: 10, scale: 0.95, opacity: 0 }}
-                animate={{ y: 0, scale: 1, opacity: 1 }}
-                transition={{ delay: 0.1, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              >
+        <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/10 to-transparent z-20" />
+        
+        <div className="absolute bottom-0 left-0 w-full p-10 md:p-14 z-30 pointer-events-none">
+          <div className="flex justify-between items-end">
+             <div className="space-y-4">
+              <span className="text-[9px] uppercase tracking-[0.5em] text-accent/40 font-mono block">
+                {project.category}
+              </span>
+              <h3 className="text-2xl md:text-4xl font-black tracking-tighter uppercase leading-[0.9] max-w-2xl">
                 {project.title}
-              </motion.h3>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </motion.div>
-      <div className="mt-4 flex justify-between items-start">
-        <div>
-            <h3 className="text-lg font-medium tracking-wide text-neutral-100">{project.title}</h3>
-            <p className="text-sm text-neutral-400 mt-1">{project.category}</p>
+              </h3>
+            </div>
+             <div className="text-4xl md:text-7xl font-black text-white/[0.03] select-none hidden lg:block tracking-tighter leading-none">
+                {project.details.year}
+            </div>
+          </div>
         </div>
-        <motion.div
-          animate={isHovered ? "hover" : "initial"}
-          variants={{
-            initial: { x: 0, y: 0 },
-            hover: { x: 4, y: -4 }
-          }}
-          transition={{ type: 'spring', stiffness: 400, damping: 15 }}
-        >
-          <ArrowUpRight className="w-5 h-5 text-neutral-500 group-hover:text-accent transition-colors duration-300" />
-        </motion.div>
-      </div>
+
+        <div className="absolute top-10 right-10 z-30">
+            <motion.div
+                animate={isHovered ? { scale: 1, rotate: 0, opacity: 1 } : { scale: 0.8, rotate: -45, opacity: 0 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+                className="bg-accent text-background rounded-full p-4"
+            >
+                <ArrowUpRight size={20} strokeWidth={3} />
+            </motion.div>
+        </div>
+      </motion.div>
+      
+      <AnimatePresence>
+        {isHovered && (
+            <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 0.1 }}
+                exit={{ opacity: 0 }}
+                className="absolute -inset-10 bg-accent blur-[120px] -z-10 rounded-full"
+            />
+        )}
+      </AnimatePresence>
     </Link>
   );
 };

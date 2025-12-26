@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Play, Pause, Volume2, VolumeX } from 'lucide-react';
@@ -41,6 +42,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ type, src, className, showCon
             autohide: 1,
             modestbranding: 1,
             playsinline: 1,
+            rel: 0,
+            disablekb: 1,
           },
           events: {
             onReady: onPlayerReady,
@@ -130,8 +133,9 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ type, src, className, showCon
   if (type === 'youtube' && showControls) {
     playerElement = (
       <div className={`relative w-full h-full group ${className}`}>
-        <div id={playerId} className="w-full h-full" />
-        <div className="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <div id={playerId} className="w-full h-full pointer-events-none" />
+        <div className="absolute inset-0 z-10 bg-transparent" /> {/* Overlay to block interaction with iframe */}
+        <div className="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
           <div className="flex items-center gap-4 text-white">
             <button onClick={handleTogglePlay} className="opacity-70 hover:opacity-100 transition-opacity">
               {isPlaying ? <Pause size={20} /> : <Play size={20} />}
@@ -153,14 +157,15 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ type, src, className, showCon
     );
   } else if (type === 'youtube') {
     playerElement = (
-      <iframe
-        className={`w-full h-full object-cover ${className}`}
-        src={`https://www.youtube.com/embed/${src}?autoplay=1&mute=1&loop=1&playlist=${src}&controls=0&showinfo=0&autohide=1&modestbranding=1&playsinline=1`}
-        frameBorder="0"
-        allow="autoplay; encrypted-media"
-        allowFullScreen
-        title="YouTube video player"
-      ></iframe>
+      <div className={`w-full h-full relative overflow-hidden pointer-events-none ${className}`}>
+        <iframe
+          className="absolute top-1/2 left-1/2 w-[120%] h-[120%] -translate-x-1/2 -translate-y-1/2 scale-125 object-cover"
+          src={`https://www.youtube.com/embed/${src}?autoplay=1&mute=1&loop=1&playlist=${src}&controls=0&showinfo=0&autohide=1&modestbranding=1&playsinline=1&rel=0&disablekb=1&iv_load_policy=3`}
+          frameBorder="0"
+          allow="autoplay; encrypted-media"
+          title="YouTube preview"
+        ></iframe>
+      </div>
     );
   } else {
     playerElement = (
@@ -180,7 +185,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ type, src, className, showCon
       <motion.div
         className="w-full h-full"
         whileHover={{ scale: 1.05 }}
-        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
       >
         {playerElement}
       </motion.div>

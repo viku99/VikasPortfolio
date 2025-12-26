@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, Variants } from 'framer-motion';
-import { BrainCircuit, Zap, UserCheck, Check } from 'lucide-react';
+import { Layers, Zap, Wand2, Code, BrainCircuit, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const containerVariants: Variants = {
@@ -23,11 +23,39 @@ const itemVariants: Variants = {
   },
 };
 
-const DetailListItem: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-    <div className="flex items-start gap-3">
-        <Check size={20} className="text-accent flex-shrink-0 mt-1" />
-        <p className="text-neutral-400">{children}</p>
+interface FeatureCardProps {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+}
+
+const FeatureCard: React.FC<FeatureCardProps> = ({ icon, title, description }) => (
+  <motion.div 
+    className="bg-primary border border-secondary/50 rounded-lg p-6 text-center flex flex-col items-center"
+    variants={itemVariants}
+    initial="hidden"
+    whileInView="visible"
+    viewport={{ once: true, amount: 0.5 }}
+  >
+    <div className="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mb-6 border-2 border-accent/20 text-accent">
+        {icon}
     </div>
+    <h3 className="text-xl font-bold text-neutral-100 mb-2">{title}</h3>
+    <p className="text-neutral-400 text-sm leading-relaxed">{description}</p>
+  </motion.div>
+);
+
+const TechItem: React.FC<{ name: string; reason: string }> = ({ name, reason }) => (
+    <motion.div 
+        className="bg-primary border border-secondary/50 rounded-lg p-6"
+        variants={itemVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.5 }}
+    >
+        <h4 className="font-mono text-lg text-accent">{name}</h4>
+        <p className="text-neutral-400 mt-2 text-sm">{reason}</p>
+    </motion.div>
 );
 
 
@@ -40,74 +68,100 @@ const AboutWebsite = () => {
         initial="hidden"
         animate="visible"
       >
-        <motion.div variants={itemVariants} className="text-center mb-20">
+        <motion.div variants={itemVariants} className="text-center mb-24 md:mb-32">
           <h1 className="text-5xl md:text-7xl font-bold tracking-tighter mb-4 text-accent">
-            I Built This Site With an AI.
+            The Blueprint
           </h1>
-          <p className="text-lg md:text-xl text-neutral-400">
-            Here's the real story of how I combined my creative vision with a little help from an AI to build this thing.
+          <p className="text-lg md:text-xl text-neutral-400 max-w-3xl mx-auto">
+            This site is more than a collection of work; it's an experience built on a core philosophy. Here's a look under the hood.
           </p>
         </motion.div>
 
-        <div className="space-y-16">
-          <motion.div variants={itemVariants} className="flex flex-col md:flex-row items-start gap-8">
-            <div className="p-3 bg-secondary rounded-full text-accent self-start">
-              <BrainCircuit size={32} />
-            </div>
-            <div>
-              <h2 className="text-3xl font-bold mb-4">The Idea vs. The Reality</h2>
-              <p className="text-neutral-300 leading-relaxed text-lg">
-                I had a very specific vision for this portfolio. I wanted it to feel like my video work—dynamic, cinematic, and full of life. The only problem? I'm a motion director, <span className="font-semibold text-neutral-100">not a hardcore coder.</span> Building a site this complex from scratch would have taken me months. So, I tried something different. I used an AI as my coding partner, and we built this entire site in <span className="font-bold text-accent">under 20 hours.</span> It was a <span className="italic">wild experiment</span> that completely changed how I think about creating things for the web.
-              </p>
-            </div>
-          </motion.div>
+        {/* Section 1: Philosophy */}
+        <motion.div 
+            className="text-center mb-24 md:mb-32"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+        >
+            <motion.h2 variants={itemVariants} className="text-sm uppercase tracking-widest text-neutral-500 mb-4">Philosophy</motion.h2>
+            <motion.p variants={itemVariants} className="text-3xl md:text-4xl font-medium text-neutral-100 leading-tight">
+                Motion is the primary language, not an afterthought. Every animation, transition, and interaction is designed to tell a story and evoke emotion.
+            </motion.p>
+        </motion.div>
 
-          <motion.div variants={itemVariants} className="flex flex-col md:flex-row items-start gap-8">
-            <div className="p-3 bg-secondary rounded-full text-accent self-start">
-              <Zap size={32} />
+        {/* Section 2: Deconstruction */}
+        <motion.div 
+            className="mb-24 md:mb-32"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+        >
+            <motion.h2 variants={itemVariants} className="text-3xl md:text-4xl font-bold text-center tracking-tight mb-12">Deconstructing the Experience</motion.h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <FeatureCard 
+                    icon={<Layers size={28} />} 
+                    title="Cinematic Transitions" 
+                    description="Pages don't just load, they unveil. Custom shutter animations create a sense of entering a new scene, making navigation a deliberate, cinematic act." 
+                />
+                <FeatureCard 
+                    icon={<Zap size={28} />} 
+                    title="Living Canvases" 
+                    description="Project cards are not static images. They are dormant videos that come to life on hover, transforming the grid into a dynamic, interactive preview of the work." 
+                />
+                <FeatureCard 
+                    icon={<Wand2 size={28} />} 
+                    title="Shared Element Motion" 
+                    description="When you click a project, the card fluidly expands into the hero banner of the detail page, creating a seamless and magical transition that maintains context." 
+                />
             </div>
-            <div>
-              <h2 className="text-3xl font-bold mb-4">How We Actually Worked Together</h2>
-              <p className="text-neutral-300 leading-relaxed text-lg mb-6">
-                This wasn't about pushing a button and getting a website. It was more like a conversation. I was the creative director, and the AI was my incredibly fast, incredibly knowledgeable programmer. I guided it every step of the way. Here's what that looked like:
-              </p>
-              <div className="space-y-4">
-                <DetailListItem>
-                    <strong>Getting Started:</strong> I started by telling it what I needed: a fast, modern website built with React. It immediately set up the basic project structure, files, and all the boring configuration stuff for me.
-                </DetailListItem>
-                 <DetailListItem>
-                    <strong>Building Piece by Piece:</strong> For every part of the site, like the project grid, I'd describe what I wanted. I'd say something like, <em className="text-neutral-300 font-medium">"Make me a grid of cards. When I hover over one, the picture should swap out for a video, and the whole card should pop out a bit."</em> It would spit out the code, and then it was my job to plug it in, test it, and fine-tune the animations until they felt just right.
-                </DetailListItem>
-                 <DetailListItem>
-                    <strong>Fixing Things (A Lot):</strong> Whenever I got stuck, I could just paste my broken code and say, <em className="text-neutral-300 font-medium">"This isn't working, why?"</em> It would find the bug in seconds and explain what was wrong. It was like having a senior developer on call 24/7.
-                </DetailListItem>
-                 <DetailListItem>
-                    <strong>Handling the Details:</strong> I handled the look and feel: the colors, the fonts, the overall vibe. I gave the AI my design rules, and it turned them into a consistent style guide. It handled the tedious parts so I could focus on the creative details.
-                </DetailListItem>
-              </div>
-            </div>
-          </motion.div>
+        </motion.div>
 
-          <motion.div variants={itemVariants} className="flex flex-col md:flex-row items-start gap-8">
-            <div className="p-3 bg-secondary rounded-full text-accent self-start">
-              <UserCheck size={32} />
-            </div>
-            <div>
-              <h2 className="text-3xl font-bold mb-4">My Take: It's Just a Tool.</h2>
-              <p className="text-neutral-300 leading-relaxed text-lg">
-                Look, I get it. Using an AI to code might seem like a shortcut. But for me, it's just a different kind of tool, like a camera or a piece of editing software. The AI can write code, sure. But it can't have a vision. It doesn't have taste. It can't tell a story. <span className="font-bold text-accent">That was still my job.</span> Every animation you see, every layout, every color choice, all of it came from me. I was the director making every single decision. The AI was just the tool that helped me bring those ideas to life incredibly fast. This is the future for creatives like me: <span className="font-semibold text-neutral-100">using powerful new tools to build bigger and better things than we could before.</span>
-              </p>
-            </div>
-          </motion.div>
-        </div>
-
+        {/* Section 3: Technology */}
          <motion.div 
-            className="mt-24 text-center border-t border-secondary pt-16"
+            className="mb-24 md:mb-32"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+        >
+            <motion.h2 variants={itemVariants} className="text-3xl md:text-4xl font-bold text-center tracking-tight mb-12">Code & Creativity</motion.h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <TechItem name="React & TypeScript" reason="Provides a robust, modern foundation for building a complex, type-safe user interface." />
+                <TechItem name="Framer Motion" reason="The core animation library chosen for its power in creating fluid, physics-based UI and complex, gesture-driven interactions." />
+                <TechItem name="Tailwind CSS" reason="Enables rapid, utility-first styling to craft a bespoke design system without leaving the HTML." />
+                <TechItem name="Lucide Icons" reason="A clean, consistent, and highly customizable icon set that complements the site's minimalist aesthetic." />
+            </div>
+        </motion.div>
+
+        {/* Section 4: Collaboration */}
+        <motion.div 
+            className="text-center border-t border-secondary pt-16"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+        >
+            <motion.div variants={itemVariants} className="flex justify-center items-center gap-4 mb-6">
+                <BrainCircuit size={32} className="text-accent"/>
+                <div className="text-2xl font-thin text-neutral-600">+</div>
+                <Code size={32} className="text-accent"/>
+            </motion.div>
+            <motion.h2 variants={itemVariants} className="text-3xl md:text-4xl font-bold text-neutral-100 tracking-tight">Human Curation, AI Acceleration.</motion.h2>
+            <motion.p variants={itemVariants} className="text-lg text-neutral-400 mt-4 max-w-2xl mx-auto">
+              This site was built in partnership with a generative AI. This collaboration helps me elevate my speed and thinking, allowing for rapid technical execution and freeing me to focus purely on creative direction.
+            </motion.p>
+        </motion.div>
+
+        <motion.div 
+            className="mt-16 text-center"
             variants={itemVariants}
         >
-            <p className="text-xl text-neutral-300">Anyway, that's the story behind this site.</p>
             <Link to="/portfolio" className="group inline-flex items-center justify-center mt-6 text-lg text-accent font-semibold transition-colors hover:text-white">
-                Check out the work
+                See the result
+                <ArrowRight className="w-5 h-5 ml-2 transition-transform duration-300 ease-in-out group-hover:translate-x-1" />
             </Link>
         </motion.div>
       </motion.div>
