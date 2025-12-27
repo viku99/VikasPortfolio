@@ -1,5 +1,5 @@
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, Variants, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { ChevronDown } from 'lucide-react';
@@ -9,19 +9,29 @@ const Home = () => {
   const navigate = useNavigate();
   const navigatedRef = useRef(false);
   const touchStartY = useRef(0);
+  const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
   
-  const mouseX = useMotionValue(typeof window !== 'undefined' ? window.innerWidth / 2 : 0);
-  const mouseY = useMotionValue(typeof window !== 'undefined' ? window.innerHeight / 2 : 0);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
 
   const springConfig = { damping: 30, stiffness: 200, mass: 0.5 };
   const smoothX = useSpring(mouseX, springConfig);
   const smoothY = useSpring(mouseY, springConfig);
   
   useEffect(() => {
+    // Initialize dimensions only on mount
+    setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+
+    const handleResize = () => {
+      setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+    };
+
     const handleMouseMove = (e: MouseEvent) => {
       mouseX.set(e.clientX);
       mouseY.set(e.clientY);
     };
+
+    window.addEventListener('resize', handleResize);
     window.addEventListener('mousemove', handleMouseMove);
     
     const handleScroll = (event: WheelEvent) => {
@@ -40,8 +50,6 @@ const Home = () => {
       if (navigatedRef.current) return;
       const currentY = event.touches[0].clientY;
       const deltaY = currentY - touchStartY.current;
-
-      // Threshold for swipe up (negative delta means swipe up)
       if (deltaY < -40) { 
         navigatedRef.current = true;
         navigate('/portfolio');
@@ -52,6 +60,7 @@ const Home = () => {
     window.addEventListener('touchmove', handleTouchMove, { passive: true });
     
     return () => {
+      window.removeEventListener('resize', handleResize);
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('wheel', handleScroll);
       window.removeEventListener('touchstart', handleTouchStart);
@@ -59,8 +68,8 @@ const Home = () => {
     };
   }, [navigate, mouseX, mouseY]);
 
-  const rotateX = useTransform(smoothY, [0, typeof window !== 'undefined' ? window.innerHeight : 0], [10, -10]);
-  const rotateY = useTransform(smoothX, [0, typeof window !== 'undefined' ? window.innerWidth : 0], [-10, 10]);
+  const rotateX = useTransform(smoothY, [0, windowSize.height || 1000], [10, -10]);
+  const rotateY = useTransform(smoothX, [0, windowSize.width || 1920], [-10, 10]);
 
   const name = SITE_INFO.name;
 

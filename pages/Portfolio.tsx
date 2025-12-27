@@ -221,7 +221,7 @@ const Portfolio = () => {
                         transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
                         className="text-accent/20"
                       >
-                        <Loader2 size={48} md:size={64} strokeWidth={0.5} />
+                        <Loader2 className="w-12 h-12 md:w-16 md:h-16" strokeWidth={0.5} />
                       </motion.div>
                     </div>
                     <div className="text-center space-y-2">

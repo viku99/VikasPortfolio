@@ -42,7 +42,7 @@ export const PROJECTS: Project[] = [
     details: {
       role: 'Motion Director & Editor',
       techStack: ['After Effects', 'Premiere Pro', 'Adobe Audition'],
-      year: 2024,
+      year: 2025,
       techniques: [
         'Dynamic Lower Thirds', 
         'Expression-based Animation', 
@@ -102,7 +102,7 @@ export const PROJECTS: Project[] = [
     details: {
       role: 'Senior Motion Designer',
       techStack: ['After Effects', 'Photoshop', 'Premiere Pro'],
-      year: 2024,
+      year: 2025,
       techniques: [
         'Kinetic Masking', 
         '2D Spatial Manipulation', 

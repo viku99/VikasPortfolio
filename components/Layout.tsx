@@ -5,7 +5,6 @@ import { useAppContext } from '../contexts/AppContext';
 import Navigation from './Navigation';
 import Showreel from './Showreel';
 import BottomNavigation from './BottomNavigation';
-import CustomCursor from './CustomCursor';
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
@@ -13,9 +12,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   return (
     <div className="bg-background text-accent font-sans min-h-screen relative overflow-x-hidden selection:bg-accent selection:text-background">
-      <CustomCursor />
-      
-      {/* Enhanced Grain Overlay - Higher performance than GIF */}
+      {/* Enhanced Grain Overlay - Using global tailwind config from index.html */}
       <div className="fixed inset-0 pointer-events-none z-[100] opacity-[0.03] overflow-hidden">
         <div className="absolute inset-[-200%] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] animate-grain" />
       </div>
@@ -41,20 +38,6 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         </main>
         <BottomNavigation />
       </div>
-
-      <style>{`
-        @keyframes grain {
-          0%, 100% { transform:translate(0, 0) }
-          10% { transform:translate(-5%, -10%) }
-          30% { transform:translate(3%, -15%) }
-          50% { transform:translate(12%, 9%) }
-          70% { transform:translate(-9%, 4%) }
-          90% { transform:translate(2%, -7%) }
-        }
-        .animate-grain {
-          animation: grain 8s steps(10) infinite;
-        }
-      `}</style>
     </div>
   );
 };

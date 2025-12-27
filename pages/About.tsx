@@ -113,19 +113,26 @@ const SkillBar: React.FC<{ name: string; level: number; label: string }> = ({ na
 
 const About = () => {
   const [phiIndex, setPhiIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
   const intervalRef = useRef<number | null>(null);
 
+  const startInterval = () => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    intervalRef.current = window.setInterval(() => {
+      setPhiIndex((prev) => (prev + 1) % PHILOSOPHY_VARIANTS.length);
+    }, 9000);
+  };
+
   useEffect(() => {
-    if (!isPaused) {
-      intervalRef.current = window.setInterval(() => {
-        setPhiIndex((prev) => (prev + 1) % PHILOSOPHY_VARIANTS.length);
-      }, 9000); 
-    }
+    startInterval();
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
-  }, [isPaused]);
+  }, []);
+
+  const handleManualSwitch = (index: number) => {
+    setPhiIndex(index);
+    startInterval(); // Reset timer on manual click
+  };
 
   const socialIcons: { [key: string]: React.ReactNode } = {
     LinkedIn: <Linkedin className="w-4 h-4 md:w-5 md:h-5" />,
@@ -204,7 +211,7 @@ const About = () => {
                     </div>
                     <div className="flex flex-wrap gap-2 md:gap-4">
                       {PHILOSOPHY_VARIANTS.map((variant, idx) => (
-                        <button key={variant.lang} onClick={() => setPhiIndex(idx)} className={`text-[8px] font-mono tracking-widest px-3 py-1 rounded-full border transition-all duration-300 ${phiIndex === idx ? 'border-accent text-accent bg-accent/10' : 'border-white/10 text-neutral-600 hover:border-white/30'}`}>
+                        <button key={variant.lang} onClick={() => handleManualSwitch(idx)} className={`text-[8px] font-mono tracking-widest px-3 py-1 rounded-full border transition-all duration-300 ${phiIndex === idx ? 'border-accent text-accent bg-accent/10' : 'border-white/10 text-neutral-600 hover:border-white/30'}`}>
                           {variant.lang}
                         </button>
                       ))}
@@ -309,7 +316,7 @@ const About = () => {
       </section>
 
       <footer className="py-12 md:py-20 flex flex-col items-center gap-6 md:gap-10 opacity-40">
-        <div className="text-[8px] md:text-[10px] uppercase tracking-[0.8em] text-neutral-600">Archive Identity // VB-2024</div>
+        <div className="text-[8px] md:text-[10px] uppercase tracking-[0.8em] text-neutral-600">Archive Identity // VB-2025</div>
       </footer>
     </div>
   );

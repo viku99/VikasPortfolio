@@ -1,26 +1,23 @@
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useMotionValue } from 'framer-motion';
 
 export const useMousePosition = () => {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      setPosition({ x: e.clientX, y: e.clientY });
-      // On the first move, ensure it's visible
+      x.set(e.clientX);
+      y.set(e.clientY);
       if (!isVisible) setIsVisible(true);
     };
 
-    const handleMouseLeave = () => {
-      setIsVisible(false);
-    };
+    const handleMouseLeave = () => setIsVisible(false);
+    const handleMouseEnter = () => setIsVisible(true);
 
-    const handleMouseEnter = () => {
-      setIsVisible(true);
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
     document.addEventListener('mouseleave', handleMouseLeave);
     document.addEventListener('mouseenter', handleMouseEnter);
 
@@ -29,7 +26,7 @@ export const useMousePosition = () => {
       document.removeEventListener('mouseleave', handleMouseLeave);
       document.removeEventListener('mouseenter', handleMouseEnter);
     };
-  }, [isVisible]);
+  }, [isVisible, x, y]);
 
-  return { ...position, isVisible };
+  return { x, y, isVisible };
 };
