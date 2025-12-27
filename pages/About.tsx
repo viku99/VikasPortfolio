@@ -77,17 +77,17 @@ const SignatureMethodology = [
     {
         title: "Frame-Data Analysis",
         desc: "Strict adherence to sub-frame audio transients to ensure absolute synchronization between visual impact and sonic peaks.",
-        icon: <Cpu size={20} />
+        icon: <Cpu className="w-5 h-5" />
     },
     {
         title: "Kinetic Physics",
         desc: "Manual curve-editing in the Graph Editor to simulate real-world weight and momentum in digital assets.",
-        icon: <Activity size={20} />
+        icon: <Activity className="w-5 h-5" />
     },
     {
         title: "Modular Comps",
         desc: "Building dynamic, automated workflows that allow for high-end cinematic results under aggressive newsroom deadlines.",
-        icon: <Layout size={20} />
+        icon: <Layout className="w-5 h-5" />
     }
 ];
 
@@ -128,15 +128,14 @@ const About = () => {
   }, [isPaused]);
 
   const socialIcons: { [key: string]: React.ReactNode } = {
-    LinkedIn: <Linkedin size={18} />,
-    Behance: <Briefcase size={18} />,
-    Github: <Github size={18} />,
-    Instagram: <Instagram size={18} />,
+    LinkedIn: <Linkedin className="w-4 h-4 md:w-5 md:h-5" />,
+    Behance: <Briefcase className="w-4 h-4 md:w-5 md:h-5" />,
+    Github: <Github className="w-4 h-4 md:w-5 md:h-5" />,
+    Instagram: <Instagram className="w-4 h-4 md:w-5 md:h-5" />,
   };
 
   return (
     <div className="bg-background min-h-screen selection:bg-accent selection:text-background pb-16">
-      {/* CINEMATIC HEADER */}
       <section className="pt-32 md:pt-40 pb-12 md:pb-20 px-6">
         <div className="container mx-auto">
             <motion.div 
@@ -145,7 +144,6 @@ const About = () => {
                 animate="visible"
                 className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-center"
             >
-                {/* IDENTITY VIEWPORT */}
                 <motion.div variants={itemVariants} className="lg:col-span-5 relative group order-2 lg:order-1">
                     <div className="relative aspect-[4/5] overflow-hidden rounded-2xl border border-white/10 bg-primary shadow-2xl">
                         <img 
@@ -196,47 +194,28 @@ const About = () => {
         </div>
       </section>
 
-      {/* CORE PHILOSOPHY */}
-      <section 
-        className="py-16 md:py-32 px-6 border-y border-white/5 bg-white/[0.01]"
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
-      >
+      <section className="py-16 md:py-32 px-6 border-y border-white/5 bg-white/[0.01]">
         <div className="container mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-16">
                 <div className="space-y-6 md:space-y-8">
                     <div className="flex items-center gap-3 text-neutral-500">
-                        <Target size={16} md:size={18} />
+                        <Target className="w-4 h-4 md:w-5 md:h-5" />
                         <h2 className="text-[10px] md:text-[12px] uppercase tracking-[0.4em] md:tracking-[0.6em] font-black">Philosophy</h2>
                     </div>
-                    
                     <div className="flex flex-wrap gap-2 md:gap-4">
                       {PHILOSOPHY_VARIANTS.map((variant, idx) => (
-                        <button 
-                          key={variant.lang}
-                          onClick={() => setPhiIndex(idx)}
-                          className={`text-[8px] font-mono tracking-widest px-3 py-1 rounded-full border transition-all duration-300 ${phiIndex === idx ? 'border-accent text-accent bg-accent/10' : 'border-white/10 text-neutral-600 hover:border-white/30'}`}
-                        >
+                        <button key={variant.lang} onClick={() => setPhiIndex(idx)} className={`text-[8px] font-mono tracking-widest px-3 py-1 rounded-full border transition-all duration-300 ${phiIndex === idx ? 'border-accent text-accent bg-accent/10' : 'border-white/10 text-neutral-600 hover:border-white/30'}`}>
                           {variant.lang}
                         </button>
                       ))}
                     </div>
                 </div>
-                
                 <div className="lg:col-span-2 relative min-h-[160px] md:min-h-[220px]">
                     <AnimatePresence mode="wait">
-                      <motion.p 
-                        key={phiIndex}
-                        initial={{ opacity: 0, y: 5 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -5 }}
-                        transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
-                        className="text-xl md:text-4xl text-neutral-300 leading-tight tracking-tight font-light"
-                      >
+                      <motion.p key={phiIndex} initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -5 }} transition={{ duration: 0.8 }} className="text-xl md:text-4xl text-neutral-300 leading-tight tracking-tight font-light">
                         {PHILOSOPHY_VARIANTS[phiIndex].text}
                       </motion.p>
                     </AnimatePresence>
-                    
                     <div className="absolute -bottom-8 left-0 flex items-center gap-2 text-neutral-800">
                       <Globe size={10} className="animate-pulse" />
                       <span className="text-[7px] md:text-[8px] uppercase tracking-[0.4em] md:tracking-[0.5em] font-mono">Archive_Relay_{PHILOSOPHY_VARIANTS[phiIndex].lang}</span>
@@ -246,18 +225,16 @@ const About = () => {
         </div>
       </section>
 
-      {/* EXPERTISE & SIGNATURE WORKFLOW */}
       <section className="py-20 md:py-32 px-6">
         <div className="container mx-auto">
              <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
                 <div className="space-y-4">
                     <div className="flex items-center gap-3 text-neutral-500">
-                        <Zap size={18} />
+                        <Zap className="w-4 h-4 md:w-5 md:h-5" />
                         <h2 className="text-[10px] md:text-[12px] uppercase tracking-[0.6em] font-black">Expertise</h2>
                     </div>
                 </div>
                 <div className="lg:col-span-2 space-y-16 md:space-y-24">
-                    {/* SKILL BARS */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
                         {expertiseData.map((group) => (
                             <div key={group.category} className="space-y-6 md:space-y-10">
@@ -274,11 +251,10 @@ const About = () => {
                         ))}
                     </div>
 
-                    {/* STRENGTHS & CURRENT FOCUS */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12">
                         <div className="p-6 md:p-8 bg-white/[0.02] border border-white/5 rounded-2xl md:rounded-3xl space-y-4">
                             <div className="flex items-center gap-3 text-accent/40">
-                                <Sparkles size={14} md:size={16} />
+                                <Sparkles className="w-3.5 h-3.5 md:w-4 md:h-4" />
                                 <h4 className="text-[9px] md:text-[10px] uppercase tracking-[0.3em] font-mono">Strengths</h4>
                             </div>
                             <p className="text-xs md:text-sm text-neutral-400 leading-relaxed">
@@ -287,7 +263,7 @@ const About = () => {
                         </div>
                         <div className="p-6 md:p-8 bg-white/[0.02] border border-white/5 rounded-2xl md:rounded-3xl space-y-4">
                             <div className="flex items-center gap-3 text-accent/40">
-                                <TrendingUp size={14} md:size={16} />
+                                <TrendingUp className="w-3.5 h-3.5 md:w-4 md:h-4" />
                                 <h4 className="text-[9px] md:text-[10px] uppercase tracking-[0.3em] font-mono">Current Focus</h4>
                             </div>
                             <p className="text-xs md:text-sm text-neutral-400 leading-relaxed">
@@ -296,7 +272,6 @@ const About = () => {
                         </div>
                     </div>
 
-                    {/* SIGNATURE TECHNIQUES */}
                     <div className="space-y-8 md:space-y-12">
                         <h3 className="text-[9px] md:text-[10px] uppercase tracking-[0.4em] text-accent/40 font-mono flex items-center gap-4">
                             <span className="w-1.5 h-1.5 rounded-full bg-accent" />
@@ -321,19 +296,13 @@ const About = () => {
         </div>
       </section>
 
-      {/* CALL TO ACTION */}
       <section className="py-24 md:py-40 px-6 bg-white/[0.01]">
         <div className="container mx-auto text-center">
-            <motion.div
-                initial={{ opacity: 0, scale: 0.98 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                className="max-w-4xl mx-auto space-y-8 md:space-y-12"
-            >
+            <motion.div initial={{ opacity: 0, scale: 0.98 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} className="max-w-4xl mx-auto space-y-8 md:space-y-12">
                 <h2 className="text-4xl md:text-7xl font-black uppercase tracking-tighter">Ready to <br className="md:hidden" /> <span className="text-accent/30">ignite</span> <br className="md:hidden" /> your vision?</h2>
                 <Link to="/contact" className="inline-flex items-center gap-4 md:gap-6 px-8 md:px-12 py-4 md:py-6 bg-accent text-background rounded-full text-xs md:text-sm font-black uppercase tracking-widest hover:scale-105 transition-transform">
                     Initialize Contact
-                    <ArrowRight size={18} md:size={20} />
+                    <ArrowRight className="w-4.5 h-4.5 md:w-5 md:h-5" />
                 </Link>
             </motion.div>
         </div>

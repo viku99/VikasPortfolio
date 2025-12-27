@@ -63,7 +63,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
                 transition={{ type: 'spring', stiffness: 400, damping: 25 }}
                 className="bg-accent text-background rounded-full p-3 md:p-4"
             >
-                <ArrowUpRight size={16} md:size={20} strokeWidth={3} />
+                <ArrowUpRight strokeWidth={3} className="w-4 h-4 md:w-5 md:h-5" />
             </motion.div>
         </div>
       </motion.div>
