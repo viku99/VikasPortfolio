@@ -1,3 +1,4 @@
+
 import { Project } from './types';
 
 // ============================================================================
@@ -83,5 +84,35 @@ export const PROJECTS: Project[] = [
     },
     challenge: 'Achieving perfect synchronization without automated plugins. Every hit needed to feel impactful through visual physics rather than just filters.',
     solution: 'This was edited entirely within After Effects. I used the Graph Editor for manual time-remapping, ensuring that speed curves aligned precisely with the audio waveform peaks. No "beat-sync" plugins were used; every frame was curated for maximum impact.',
+  },
+  {
+    id: 'optic-sequence',
+    title: 'Optic Sequence: 2D Kinetic Study',
+    category: 'Product Motion Editorial',
+    description: 'A high-velocity motion graphic edit utilizing static 2D eyewear photography. This project explores the boundary between flat imagery and perceived depth, using aggressive masking and sub-frame beat synchronization to showcase product variants in a clean, professional sequence.',
+    imageUrl: 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?q=80&w=2080&auto=format&fit=crop',
+    cardPreviewVideo: {
+      type: 'youtube',
+      src: 'Xd1u0Nq2OPo',
+    },
+    heroVideo: {
+      type: 'youtube',
+      src: 'Xd1u0Nq2OPo',
+    },
+    details: {
+      role: 'Senior Motion Designer',
+      techStack: ['After Effects', 'Photoshop', 'Premiere Pro'],
+      year: 2024,
+      techniques: [
+        'Kinetic Masking', 
+        '2D Spatial Manipulation', 
+        'Sub-frame Beat Matching', 
+        'Dynamic Scale Ramping',
+        'Minimalist Typography'
+      ],
+      analysis: 'The technical objective was to breathe life into 2D static assets. I utilized Photoshop to extract product layers and After Effects to create the illusion of depth through scale-pulsing and speed-ramped transitions. Every "mask-reveal" is tied to a specific sonic transient, creating a high-energy rhythmic flow that maintains professional minimalism while maximizing product visibility.'
+    },
+    challenge: 'Creating a high-end product showcase using only flat 2D images without it feeling static or amateur.',
+    solution: 'I developed a modular masking system that allowed for rapid, beat-accurate switching between models. By focusing on clean geometric reveals and precise scale-ramping, I unified the 2D assets into a cinematic editorial piece.',
   },
 ];
