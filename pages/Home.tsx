@@ -1,6 +1,6 @@
 
 import React, { useEffect, useRef } from 'react';
-import { motion, Variants, useMotionValue, useTransform } from 'framer-motion';
+import { motion, Variants, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { ChevronDown } from 'lucide-react';
 import { SITE_INFO } from '../constants';
@@ -12,6 +12,10 @@ const Home = () => {
   
   const mouseX = useMotionValue(typeof window !== 'undefined' ? window.innerWidth / 2 : 0);
   const mouseY = useMotionValue(typeof window !== 'undefined' ? window.innerHeight / 2 : 0);
+
+  const springConfig = { damping: 30, stiffness: 200, mass: 0.5 };
+  const smoothX = useSpring(mouseX, springConfig);
+  const smoothY = useSpring(mouseY, springConfig);
   
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -37,8 +41,8 @@ const Home = () => {
       const currentY = event.touches[0].clientY;
       const deltaY = currentY - touchStartY.current;
 
-      // Threshold for swipe up
-      if (deltaY < -50) { 
+      // Threshold for swipe up (negative delta means swipe up)
+      if (deltaY < -40) { 
         navigatedRef.current = true;
         navigate('/portfolio');
       }
@@ -55,8 +59,8 @@ const Home = () => {
     };
   }, [navigate, mouseX, mouseY]);
 
-  const rotateX = useTransform(mouseY, [0, typeof window !== 'undefined' ? window.innerHeight : 0], [10, -10]);
-  const rotateY = useTransform(mouseX, [0, typeof window !== 'undefined' ? window.innerWidth : 0], [-10, 10]);
+  const rotateX = useTransform(smoothY, [0, typeof window !== 'undefined' ? window.innerHeight : 0], [10, -10]);
+  const rotateY = useTransform(smoothX, [0, typeof window !== 'undefined' ? window.innerWidth : 0], [-10, 10]);
 
   const name = SITE_INFO.name;
 
@@ -65,72 +69,77 @@ const Home = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.5,
+        staggerChildren: 0.08,
+        delayChildren: 0.3,
       },
     },
   };
 
   const letterVariants: Variants = {
-    hidden: { opacity: 0, y: 50, skewY: 10 },
+    hidden: { opacity: 0, y: 100, skewX: -20 },
     visible: {
       opacity: 1,
       y: 0,
-      skewY: 0,
-      transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
+      skewX: 0,
+      transition: { duration: 1, ease: [0.22, 1, 0.36, 1] },
     },
   };
   
-  const subtitleVariants = {
-      hidden: { opacity: 0, y: 20 },
-      visible: { opacity: 1, y: 0, transition: { duration: 0.8, delay: 1.2 } }
+  const subtitleVariants: Variants = {
+      hidden: { opacity: 0, y: 30 },
+      visible: { opacity: 1, y: 0, transition: { duration: 0.8, delay: 1.0, ease: 'easeOut' } }
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center text-center p-4 relative overflow-hidden">
-      <motion.div style={{ perspective: '1000px' }}>
+    <div className="min-h-screen flex flex-col items-center justify-center text-center p-6 relative overflow-hidden bg-background">
+      <motion.div style={{ perspective: '1200px' }} className="z-10 w-full px-4">
           <motion.div style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}>
             <motion.h1
-              className="text-[12vw] md:text-[15vw] lg:text-[12rem] font-black tracking-tighter text-accent leading-none"
+              className="text-[22vw] md:text-[16vw] lg:text-[14rem] font-[900] tracking-tighter text-accent leading-[0.8] mb-8 select-none"
               variants={containerVariants}
               initial="hidden"
               animate="visible"
               aria-label={name}
             >
               {name.split('').map((letter, index) => (
-                <motion.span key={index} variants={letterVariants} className="inline-block">
+                <motion.span key={index} variants={letterVariants} className="inline-block origin-bottom">
                   {letter}
                 </motion.span>
               ))}
             </motion.h1>
+            
             <motion.div 
-              className="mt-6 flex flex-col gap-2"
+              className="flex flex-col gap-4 mt-2"
               variants={subtitleVariants}
               initial="hidden"
               animate="visible"
             >
-              <p className="text-xl md:text-3xl text-neutral-100 font-bold uppercase tracking-widest">{SITE_INFO.role}</p>
-              <p className="text-lg md:text-2xl text-neutral-400 max-w-3xl font-light mx-auto">
+              <h2 className="text-sm md:text-xl lg:text-2xl text-accent font-black uppercase tracking-[0.2em] md:tracking-[0.45em]">
+                {SITE_INFO.role}
+              </h2>
+              <p className="text-[10px] md:text-lg text-neutral-500 max-w-2xl mx-auto font-medium tracking-wide px-4">
                 {SITE_INFO.tagline}
               </p>
             </motion.div>
         </motion.div>
       </motion.div>
       
+      <div className="absolute inset-0 z-0 pointer-events-none bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.03)_0%,transparent_70%)]" />
+
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1.8 }}
-        className="absolute bottom-10"
+        transition={{ duration: 1, delay: 2.2 }}
+        className="absolute bottom-20 md:bottom-12"
       >
         <Link to="/portfolio" aria-label="Scroll to portfolio">
             <motion.div
-              animate={{ y: [0, 10, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-              className="flex flex-col items-center gap-2"
+              animate={{ y: [0, 8, 0] }}
+              transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+              className="flex flex-col items-center gap-3"
             >
-              <span className="text-[10px] uppercase tracking-[0.3em] text-neutral-500">Scroll to enter</span>
-              <ChevronDown className="w-6 h-6 text-neutral-600" />
+              <span className="text-[8px] md:text-[9px] uppercase tracking-[0.6em] md:tracking-[0.8em] text-neutral-600 font-mono">Scroll to explore</span>
+              <ChevronDown className="w-5 h-5 text-neutral-800" />
             </motion.div>
         </Link>
       </motion.div>

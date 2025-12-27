@@ -1,3 +1,4 @@
+
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { motion, Variants, AnimatePresence } from 'framer-motion';
 import { Search, ChevronDown, X, Loader2 } from 'lucide-react';
@@ -88,7 +89,7 @@ const Portfolio = () => {
   const sortLabel = sortOptions.find(opt => opt.value === sortBy)?.label || 'Sort';
 
   return (
-    <div className="bg-background min-h-screen pt-40">
+    <div className="bg-background min-h-screen pt-32 md:pt-40">
       <div className="container mx-auto px-6 md:px-8 pb-32">
         <motion.div 
           initial="hidden" 
@@ -96,22 +97,22 @@ const Portfolio = () => {
           variants={containerVariants}
         >
           {/* Header Section */}
-          <div className="mb-20 text-center">
-              <motion.span variants={itemVariants} className="text-[10px] uppercase tracking-[0.8em] text-neutral-500 font-mono mb-4 block">Archive Directory // Vol 1</motion.span>
-              <motion.h1 variants={itemVariants} className="text-5xl md:text-8xl font-black uppercase tracking-tighter leading-none mb-12">
+          <div className="mb-12 md:mb-20 text-center">
+              <motion.span variants={itemVariants} className="text-[8px] md:text-[10px] uppercase tracking-[0.4em] md:tracking-[0.8em] text-neutral-500 font-mono mb-4 block">Archive Directory // Vol 1</motion.span>
+              <motion.h1 variants={itemVariants} className="text-4xl md:text-8xl font-black uppercase tracking-tighter leading-none mb-8 md:mb-12">
                   Selected <br /> <span className="text-neutral-700">Works</span>
               </motion.h1>
           </div>
 
           {/* Controls Bar */}
-          <div className="mb-20 flex flex-col md:flex-row gap-4 items-center justify-center max-w-5xl mx-auto">
+          <div className="mb-12 md:mb-20 flex flex-col md:flex-row gap-4 items-center justify-center max-w-5xl mx-auto">
             <motion.div variants={itemVariants} className="relative w-full md:flex-grow">
               <input
                 type="text"
                 placeholder="Search work..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-primary/40 border border-white/5 backdrop-blur-md pl-12 pr-12 py-4 text-accent placeholder-neutral-600 focus:outline-none focus:border-accent/30 rounded-full transition-all text-sm uppercase tracking-wider"
+                className="w-full bg-primary/40 border border-white/5 backdrop-blur-md pl-12 pr-12 py-3 md:py-4 text-accent placeholder-neutral-600 focus:outline-none focus:border-accent/30 rounded-full transition-all text-[11px] md:text-sm uppercase tracking-wider"
               />
               <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-600" />
               {searchQuery && (
@@ -128,9 +129,9 @@ const Portfolio = () => {
               <div className="relative flex-grow md:w-auto" ref={techRef}>
                 <button
                     onClick={() => setIsTechOpen(!isTechOpen)}
-                    className={`w-full bg-primary/40 border border-white/5 px-6 py-4 text-sm uppercase tracking-widest rounded-full flex items-center justify-between min-w-[180px] transition-colors ${selectedTech ? 'text-accent border-accent/40' : 'text-neutral-400'}`}
+                    className={`w-full bg-primary/40 border border-white/5 px-6 py-3 md:py-4 text-[10px] md:text-sm uppercase tracking-widest rounded-full flex items-center justify-between min-w-[140px] md:min-w-[180px] transition-colors ${selectedTech ? 'text-accent border-accent/40' : 'text-neutral-400'}`}
                 >
-                    <span className="truncate max-w-[120px]">{techFilterLabel}</span>
+                    <span className="truncate max-w-[80px] md:max-w-[120px]">{techFilterLabel}</span>
                     <ChevronDown className={`w-4 h-4 ml-2 transition-transform duration-300 ${isTechOpen ? 'rotate-180' : ''}`} />
                 </button>
                 <AnimatePresence>
@@ -139,22 +140,22 @@ const Portfolio = () => {
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: 10 }}
-                            className="absolute top-full mt-3 right-0 w-64 bg-[#0d0d0d] border border-white/10 rounded-2xl shadow-2xl z-50 overflow-hidden backdrop-blur-2xl"
+                            className="absolute top-full mt-3 left-0 md:right-0 w-64 bg-[#0d0d0d] border border-white/10 rounded-2xl shadow-2xl z-50 overflow-hidden backdrop-blur-2xl"
                         >
                           <li 
                             onClick={() => { setSelectedTech(null); setIsTechOpen(false); }} 
-                            className="px-5 py-4 cursor-pointer hover:bg-white/5 text-[10px] uppercase tracking-[0.2em] border-b border-white/5"
+                            className="px-5 py-4 cursor-pointer hover:bg-white/5 text-[9px] md:text-[10px] uppercase tracking-[0.2em] border-b border-white/5"
                           >
                             Show All Work
                           </li>
                           {Object.entries(techCategories).map(([category, techs]) => (
                             <React.Fragment key={category}>
-                                <li className="px-5 py-2 text-[9px] uppercase tracking-widest text-neutral-600 font-black bg-white/2">{category}</li>
+                                <li className="px-5 py-2 text-[8px] md:text-[9px] uppercase tracking-widest text-neutral-600 font-black bg-white/2">{category}</li>
                                 {techs.map(tech => (
                                     <li 
                                       key={tech} 
                                       onClick={() => handleTechChange(tech)} 
-                                      className={`px-5 py-3 text-[11px] uppercase tracking-widest cursor-pointer hover:bg-white/5 transition-colors ${selectedTech === tech ? 'text-accent bg-white/5' : 'text-neutral-400'}`}
+                                      className={`px-5 py-3 text-[10px] md:text-[11px] uppercase tracking-widest cursor-pointer hover:bg-white/5 transition-colors ${selectedTech === tech ? 'text-accent bg-white/5' : 'text-neutral-400'}`}
                                     >
                                       {tech}
                                     </li>
@@ -169,9 +170,9 @@ const Portfolio = () => {
               <div className="relative flex-grow md:w-auto" ref={sortRef}>
                 <button
                     onClick={() => setIsSortOpen(!isSortOpen)}
-                    className={`w-full bg-primary/40 border border-white/5 px-6 py-4 text-sm uppercase tracking-widest rounded-full flex items-center justify-between min-w-[150px] transition-colors ${sortBy !== 'default' ? 'text-accent border-accent/40' : 'text-neutral-400'}`}
+                    className={`w-full bg-primary/40 border border-white/5 px-6 py-3 md:py-4 text-[10px] md:text-sm uppercase tracking-widest rounded-full flex items-center justify-between min-w-[120px] md:min-w-[150px] transition-colors ${sortBy !== 'default' ? 'text-accent border-accent/40' : 'text-neutral-400'}`}
                 >
-                    <span className="truncate max-w-[100px]">{sortLabel}</span>
+                    <span className="truncate max-w-[70px] md:max-w-[100px]">{sortLabel}</span>
                     <ChevronDown className={`w-4 h-4 ml-2 transition-transform duration-300 ${isSortOpen ? 'rotate-180' : ''}`} />
                 </button>
                 <AnimatePresence>
@@ -186,7 +187,7 @@ const Portfolio = () => {
                                 <li
                                     key={option.value}
                                     onClick={() => { setSortBy(option.value); setIsSortOpen(false); }}
-                                    className={`px-5 py-4 text-[11px] uppercase tracking-widest cursor-pointer hover:bg-white/5 transition-colors ${sortBy === option.value ? 'text-accent' : 'text-neutral-400'}`}
+                                    className={`px-5 py-4 text-[10px] md:text-[11px] uppercase tracking-widest cursor-pointer hover:bg-white/5 transition-colors ${sortBy === option.value ? 'text-accent' : 'text-neutral-400'}`}
                                 >
                                     {option.label}
                                 </li>
@@ -200,7 +201,7 @@ const Portfolio = () => {
 
           {/* Project List */}
           <motion.div 
-              className="flex flex-col items-center gap-24 md:gap-40 max-w-5xl mx-auto"
+              className="flex flex-col items-center gap-12 md:gap-40 max-w-5xl mx-auto"
               variants={containerVariants}
           >
               {displayedProjects.map((project) => (
@@ -220,14 +221,14 @@ const Portfolio = () => {
                         transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
                         className="text-accent/20"
                       >
-                        <Loader2 size={64} strokeWidth={0.5} />
+                        <Loader2 size={48} md:size={64} strokeWidth={0.5} />
                       </motion.div>
                     </div>
                     <div className="text-center space-y-2">
-                      <h4 className="text-[10px] uppercase tracking-[0.5em] font-mono text-neutral-400 group-hover:text-accent transition-colors">
+                      <h4 className="text-[8px] md:text-[10px] uppercase tracking-[0.5em] font-mono text-neutral-400 group-hover:text-accent transition-colors">
                         More projects are getting cooked
                       </h4>
-                      <p className="text-[8px] uppercase tracking-[0.3em] text-neutral-600 font-mono">
+                      <p className="text-[6px] md:text-[8px] uppercase tracking-[0.3em] text-neutral-600 font-mono">
                         System update in progress
                       </p>
                     </div>
@@ -236,12 +237,12 @@ const Portfolio = () => {
               
               {displayedProjects.length === 0 && (
                    <div className="text-center py-40 w-full">
-                      <p className="text-sm text-neutral-600 uppercase tracking-[0.4em] font-mono">
+                      <p className="text-[10px] md:text-sm text-neutral-600 uppercase tracking-[0.4em] font-mono">
                         No artifacts matching criteria.
                       </p>
                       <button 
                         onClick={() => {setSearchQuery(''); setSelectedTech(null); setSortBy('default');}}
-                        className="mt-6 text-accent text-[10px] uppercase tracking-widest border-b border-accent/20 hover:border-accent"
+                        className="mt-6 text-accent text-[8px] md:text-[10px] uppercase tracking-widest border-b border-accent/20 hover:border-accent"
                       >
                         Reset Archive
                       </button>
