@@ -26,6 +26,81 @@ export const SITE_INFO = {
 
 export const PROJECTS: Project[] = [
   {
+    id: 'the-vision-series',
+    title: 'The Vision Series: Product Motion',
+    category: 'Product & Brand Editorial',
+    description: 'A comprehensive study in rhythmic product editing for a luxury eyewear brand. This collection explores eight distinct visual narratives, focusing on sub-frame beat synchronization, dynamic speed ramping, and minimalist aesthetic control.',
+    imageUrl: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?q=80&w=2080&auto=format&fit=crop',
+    isSeries: true,
+    cardPreviewVideo: {
+      type: 'youtube',
+      src: 'bCnWijdu36Q',
+    },
+    heroVideo: {
+      type: 'youtube',
+      src: 'bCnWijdu36Q',
+    },
+    details: {
+      role: 'Creative Director & Motion Editor',
+      techStack: ['After Effects', 'Graph Editor', 'Sound Design'],
+      year: 2025,
+      techniques: [
+        'Dynamic Speed Ramping',
+        'Frame-Data Analysis',
+        'Kinetic Typography',
+        'Sub-frame Beat Matching',
+        'Luxury Color Grading'
+      ],
+      analysis: 'The goal was to create a cohesive visual language across eight different product variants without becoming repetitive. By utilizing a "modular rhythm" workflow, I was able to maintain a high-energy pace while tailoring the motion curves of each video to match specific sonic transients in the soundtrack.'
+    },
+    challenge: 'Showcasing a large volume of high-energy product edits without diluting the brand identity or overwhelming the viewer.',
+    solution: 'Developed a unified kinetic framework that uses sharp masking and aggressive time-remapping to create a consistent "snap" across all assets, presented as a curated rhythmic collection.',
+    gallery: [
+      { type: 'youtube', src: 'bCnWijdu36Q', label: 'Optic A: Speed Study' },
+      { type: 'youtube', src: '2lB3fNeKpY8', label: 'Optic B: Depth Reveal' },
+      { type: 'youtube', src: 'VMVR4tbL3Zc', label: 'Optic C: Silhouette' },
+      { type: 'youtube', src: 'm38z7e-SF9Q', label: 'Optic D: Minimalist' },
+      { type: 'youtube', src: 'f6iuy43bH_c', label: 'Optic E: High Velocity' },
+      { type: 'youtube', src: 'rs6GKOwx3Nk', label: 'Optic F: Texture' },
+      { type: 'youtube', src: 'IQgDgnhNAGc', label: 'Optic G: Rhythm Edit' },
+      { type: 'youtube', src: '4ZBInDJCYxw', label: 'Optic H: Final Cut' },
+    ]
+  },
+  {
+    id: 'the-talent-blueprint',
+    title: 'The Talent Blueprint: AI Innovation',
+    category: 'Recruitment & Corporate Motion',
+    description: 'A recruitment campaign for a leading AI Innovation company. These edits were designed to disrupt traditional corporate narratives, using high-intensity motion graphics to attract the next generation of engineers and thinkers.',
+    imageUrl: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=2070&auto=format&fit=crop',
+    isSeries: true,
+    cardPreviewVideo: {
+      type: 'youtube',
+      src: 'CQD95UN_uhU',
+    },
+    heroVideo: {
+      type: 'youtube',
+      src: 'CQD95UN_uhU',
+    },
+    details: {
+      role: 'Lead Motion Designer',
+      techStack: ['After Effects', 'Sound Design', 'AI Synthesis'],
+      year: 2025,
+      techniques: [
+        'Glitch Aesthetics',
+        'Cyber-Editorial Pacing',
+        'Dynamic Text Animation',
+        'Sound-Driven Transitions'
+      ],
+      analysis: 'Recruitment videos often suffer from being too "safe." For this AI firm, we went the opposite direction. We used a visual language that mirrors the complexity and speed of neural networks—fast cuts, high-frequency glitch effects, and a sonic landscape that feels futuristic.'
+    },
+    challenge: 'Transforming a standard internship announcement into a high-energy, aspirational "tech-event" feel.',
+    solution: 'Implemented a high-contrast visual style with aggressive motion curves, ensuring every frame felt alive and aligned with the cutting-edge nature of AI development.',
+    gallery: [
+      { type: 'youtube', src: 'CQD95UN_uhU', label: 'Phase 01: The Vision' },
+      { type: 'youtube', src: 'LIrZ-KDaWpo', label: 'Phase 02: The Opportunity' },
+    ]
+  },
+  {
     id: 'gaza-briefing',
     title: 'The Social Talks: Gaza Briefing',
     category: 'Editorial & News Media',
@@ -84,35 +159,5 @@ export const PROJECTS: Project[] = [
     },
     challenge: 'Achieving perfect synchronization without automated plugins. Every hit needed to feel impactful through visual physics rather than just filters.',
     solution: 'This was edited entirely within After Effects. I used the Graph Editor for manual time-remapping, ensuring that speed curves aligned precisely with the audio waveform peaks. No "beat-sync" plugins were used; every frame was curated for maximum impact.',
-  },
-  {
-    id: 'optic-sequence',
-    title: 'Optic Sequence: 2D Kinetic Study',
-    category: 'Product Motion Editorial',
-    description: 'A high-velocity motion graphic edit utilizing static 2D eyewear photography. This project explores the boundary between flat imagery and perceived depth, using aggressive masking and sub-frame beat synchronization to showcase product variants in a clean, professional sequence.',
-    imageUrl: 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?q=80&w=2080&auto=format&fit=crop',
-    cardPreviewVideo: {
-      type: 'youtube',
-      src: 'Xd1u0Nq2OPo',
-    },
-    heroVideo: {
-      type: 'youtube',
-      src: 'Xd1u0Nq2OPo',
-    },
-    details: {
-      role: 'Senior Motion Designer',
-      techStack: ['After Effects', 'Photoshop', 'Premiere Pro'],
-      year: 2025,
-      techniques: [
-        'Kinetic Masking', 
-        '2D Spatial Manipulation', 
-        'Sub-frame Beat Matching', 
-        'Dynamic Scale Ramping',
-        'Minimalist Typography'
-      ],
-      analysis: 'The technical objective was to breathe life into 2D static assets. I utilized Photoshop to extract product layers and After Effects to create the illusion of depth through scale-pulsing and speed-ramped transitions. Every "mask-reveal" is tied to a specific sonic transient, creating a high-energy rhythmic flow that maintains professional minimalism while maximizing product visibility.'
-    },
-    challenge: 'Creating a high-end product showcase using only flat 2D images without it feeling static or amateur.',
-    solution: 'I developed a modular masking system that allowed for rapid, beat-accurate switching between models. By focusing on clean geometric reveals and precise scale-ramping, I unified the 2D assets into a cinematic editorial piece.',
-  },
+  }
 ];

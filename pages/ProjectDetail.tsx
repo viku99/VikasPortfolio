@@ -1,8 +1,8 @@
 
-import React, { useMemo, useEffect } from 'react';
+import React, { useMemo, useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { motion, Variants } from 'framer-motion';
-import { ArrowLeft, Layers, Sparkles, Terminal, PenTool, FileText, ChevronRight, Activity } from 'lucide-react';
+import { motion, Variants, AnimatePresence } from 'framer-motion';
+import { ArrowLeft, Layers, Sparkles, Terminal, PenTool, FileText, Activity, ChevronDown, X, Info, Cpu } from 'lucide-react';
 import { PROJECTS } from '../constants';
 import VideoPlayer from '../components/VideoPlayer';
 
@@ -17,6 +17,7 @@ const fadeUp: Variants = {
 
 const ProjectDetail = () => {
   const { projectId } = useParams();
+  const [showAiNotice, setShowAiNotice] = useState(false);
 
   const projectIndex = useMemo(() => 
     PROJECTS.findIndex((p) => p.id === projectId),
@@ -28,6 +29,18 @@ const ProjectDetail = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    
+    // Trigger AI Notice for the vision series
+    if (projectId === 'the-vision-series') {
+      const timer = setTimeout(() => setShowAiNotice(true), 1200);
+      const autoClose = setTimeout(() => setShowAiNotice(false), 13200); // Show for 12s (after 1.2s delay)
+      return () => {
+        clearTimeout(timer);
+        clearTimeout(autoClose);
+      };
+    } else {
+      setShowAiNotice(false);
+    }
   }, [projectId]);
 
   if (!project || !nextProject) {
@@ -45,15 +58,96 @@ const ProjectDetail = () => {
       animate="visible" 
       className="bg-background text-accent min-h-screen selection:bg-accent selection:text-background pb-12"
     >
-      {/* 1. PRIMARY VIDEO PLAYER */}
+      {/* AI USAGE POPUP - ENHANCED SIZE AND DURATION */}
+      <AnimatePresence>
+        {showAiNotice && (
+          <motion.div 
+            initial={{ opacity: 0, y: 50, scale: 0.9, filter: 'blur(10px)' }}
+            animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
+            exit={{ opacity: 0, scale: 0.9, y: 20, filter: 'blur(10px)' }}
+            className="fixed bottom-6 left-6 right-6 md:left-auto md:bottom-12 md:right-12 z-[100] md:max-w-xl"
+          >
+            <div className="relative bg-black/80 backdrop-blur-3xl border border-white/10 rounded-2xl md:rounded-3xl p-6 md:p-10 shadow-[0_40px_100px_rgba(0,0,0,0.8)] overflow-hidden">
+              {/* Decorative Pulse Bar */}
+              <div className="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
+              
+              <button 
+                onClick={() => setShowAiNotice(false)}
+                className="absolute top-6 right-6 text-neutral-500 hover:text-accent transition-all hover:scale-110 active:scale-90"
+              >
+                <X size={24} />
+              </button>
+
+              <div className="flex flex-col md:flex-row gap-6 md:gap-8">
+                <div className="flex-shrink-0 w-14 h-14 md:w-20 md:h-20 rounded-2xl bg-accent/5 border border-accent/10 flex items-center justify-center text-accent">
+                  <Cpu size={32} className="animate-pulse" strokeWidth={1.5} />
+                </div>
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <span className="text-[10px] md:text-xs font-mono uppercase tracking-[0.4em] text-accent/50">Production Notice // 2025</span>
+                    <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.5)]" />
+                  </div>
+                  <h4 className="text-xl md:text-2xl font-black uppercase tracking-tight leading-none">Synthetic Asset Integration</h4>
+                  <p className="text-sm md:text-base text-neutral-400 leading-relaxed font-mono font-light">
+                    In the absence of high-fidelity source assets from the client, extensive <span className="text-accent font-bold">Generative AI</span> was deployed to synthesize all textures, volumetric lighting, and environmental physics from scratch. This project serves as a study in "Zero-Asset" creative direction.
+                  </p>
+                  
+                  <div className="pt-2 flex items-center gap-4">
+                    <div className="h-[1px] flex-grow bg-white/5" />
+                    <span className="text-[8px] uppercase tracking-[0.3em] text-neutral-700 font-mono italic">Process_Verified</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* 1. HERO SECTION (VIDEO OR SERIES FEED) */}
       <section className="pt-24 md:pt-32 px-4 md:px-6">
         <div className="container mx-auto">
-            <motion.div 
-                layoutId={`project-container-${project.id}`}
-                className="relative aspect-video w-full rounded-xl md:rounded-2xl overflow-hidden shadow-2xl bg-primary border border-white/5"
-            >
-                <VideoPlayer {...project.heroVideo} showControls={true} />
-            </motion.div>
+            {project.isSeries ? (
+              <div className="space-y-4 md:space-y-8">
+                <div className="flex items-center justify-between mb-4 px-2">
+                  <div className="flex items-center gap-3">
+                    <div className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+                    <span className="text-[10px] uppercase tracking-[0.4em] font-mono opacity-50">Multi-Artifact Feed // Active</span>
+                  </div>
+                  <div className="flex items-center gap-2 opacity-30 text-[9px] uppercase tracking-widest">
+                    <span>Scroll to view collection</span>
+                    <ChevronDown size={12} className="animate-bounce" />
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
+                  {project.gallery?.map((item, idx) => (
+                    <motion.div 
+                      key={idx}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: idx * 0.1 }}
+                      className="relative aspect-[9/16] md:aspect-video w-full rounded-xl md:rounded-2xl overflow-hidden shadow-2xl bg-primary border border-white/5"
+                    >
+                      <VideoPlayer 
+                        type={item.type as 'youtube' | 'local'} 
+                        src={item.src} 
+                        showControls={true} 
+                        autoplay={idx === 0} 
+                      />
+                      {/* Label removed as requested to clean up the UI */}
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <motion.div 
+                  layoutId={`project-container-${project.id}`}
+                  className="relative aspect-video w-full rounded-xl md:rounded-2xl overflow-hidden shadow-2xl bg-primary border border-white/5"
+              >
+                  <VideoPlayer {...project.heroVideo} showControls={true} />
+              </motion.div>
+            )}
         </div>
       </section>
 
@@ -173,7 +267,7 @@ const ProjectDetail = () => {
         </div>
       </section>
 
-      {/* 6. HOW I EDITED */}
+      {/* 6. METHODOLOGY */}
       <section className="py-16 md:py-24 px-6 border-y border-white/5 bg-white/[0.01]">
         <div className="container mx-auto">
             <motion.div 

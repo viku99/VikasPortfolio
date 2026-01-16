@@ -5,6 +5,7 @@ export interface Project {
   category: string;
   description: string;
   imageUrl: string;
+  isSeries?: boolean; // Flag to identify multi-video collections
   cardPreviewVideo: {
     type: 'local' | 'youtube';
     src: string;
@@ -24,7 +25,8 @@ export interface Project {
   challenge?: string;
   solution?: string;
   gallery?: {
-    type: 'image' | 'video';
+    type: 'image' | 'video' | 'youtube';
     src: string;
+    label?: string;
   }[];
 }
