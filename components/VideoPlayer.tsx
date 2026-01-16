@@ -18,10 +18,10 @@ interface VideoPlayerProps {
   className?: string;
   showControls?: boolean;
   autoplay?: boolean;
+  startUnmuted?: boolean;
+  isReelsMode?: boolean;
 }
 
-// Global registry for YT callbacks to prevent multiple script injections 
-// and handle race conditions between concurrent players.
 declare global {
   interface Window {
     onYouTubeIframeAPIReady: () => void;
@@ -35,12 +35,14 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   src, 
   className = "", 
   showControls = true, 
-  autoplay = true
+  autoplay = true,
+  startUnmuted = false,
+  isReelsMode = false
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<any>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(true);
+  const [isMuted, setIsMuted] = useState(!startUnmuted);
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
@@ -51,24 +53,27 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   const [showCenterIcon, setShowCenterIcon] = useState<'play' | 'pause' | null>(null);
   const [playerId] = useState(`player-${Math.random().toString(36).substr(2, 9)}`);
 
-  // ============================================================================
-  // YOUTUBE API INITIALIZATION
-  // ============================================================================
-  
   const onPlayerReady = (event: any) => {
     setIsReady(true);
     setDuration(event.target.getDuration());
+    
+    if (startUnmuted) {
+      event.target.unMute();
+      event.target.setVolume(100);
+      setIsMuted(false);
+    } else {
+      event.target.mute();
+    }
+
     if (autoplay) {
       event.target.playVideo();
     }
   };
 
   const onPlayerStateChange = (event: any) => {
-    // YT.PlayerState: -1 (unstarted), 0 (ended), 1 (playing), 2 (paused), 3 (buffering), 5 (video cued)
     if (event.data === 1) setIsPlaying(true);
     if (event.data === 2) setIsPlaying(false);
     if (event.data === 0) {
-      // Manual loop fallback to ensure seamless transitions
       event.target.seekTo(0);
       event.target.playVideo();
     }
@@ -87,9 +92,9 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         modestbranding: 1,
         iv_load_policy: 3,
         playsinline: 1,
-        mute: isMuted ? 1 : 0,
+        mute: startUnmuted ? 0 : 1,
         loop: 1,
-        playlist: src, // Required for the built-in loop to function
+        playlist: src,
         enablejsapi: 1,
         origin: window.location.origin
       },
@@ -98,19 +103,17 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         onStateChange: onPlayerStateChange,
       }
     });
-  }, [src, autoplay, playerId, isMuted]);
+  }, [src, autoplay, playerId, startUnmuted]);
 
   useEffect(() => {
     if (type !== 'youtube') return;
 
-    // Singleton script loading logic
     const loadYTScript = () => {
       if (window.YT && window.YT.Player) {
         initYT();
         return;
       }
 
-      // If already loading, push to queue
       if (window._ytInitializers) {
         window._ytInitializers.push(initYT);
         return;
@@ -141,7 +144,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     };
   }, [type, initYT]);
 
-  // Sync Progress & Time
   useEffect(() => {
     if (type !== 'youtube' || !isReady) return;
     
@@ -152,18 +154,12 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
           const total = playerRef.current.getDuration();
           setCurrentTime(current);
           if (total > 0) setProgress((current / total) * 100);
-        } catch (e) {
-          // Silent catch for cases where player state is transitioning
-        }
+        } catch (e) {}
       }
     }, 500);
 
     return () => clearInterval(interval);
   }, [type, isReady]);
-
-  // ============================================================================
-  // INTERACTION HANDLERS
-  // ============================================================================
 
   const togglePlay = (e?: React.MouseEvent | React.TouchEvent) => {
     if (e) e.stopPropagation();
@@ -202,46 +198,22 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     }
   };
 
-  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = parseFloat(e.target.value);
-    setVolume(val);
-    if (playerRef.current && isReady) {
-      playerRef.current.setVolume(val * 100);
-      if (val > 0 && isMuted) {
-        playerRef.current.unMute();
-        setIsMuted(false);
-      }
-    }
-  };
-
   const toggleFullscreen = (e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
     if (!containerRef.current) return;
 
     if (!document.fullscreenElement) {
-      containerRef.current.requestFullscreen().catch(err => {
-        console.error(`Fullscreen failed: ${err.message}`);
-      });
+      containerRef.current.requestFullscreen();
     } else {
       document.exitFullscreen();
     }
   };
-
-  useEffect(() => {
-    const handleFsChange = () => setIsFullscreen(!!document.fullscreenElement);
-    document.addEventListener('fullscreenchange', handleFsChange);
-    return () => document.removeEventListener('fullscreenchange', handleFsChange);
-  }, []);
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
-
-  // ============================================================================
-  // RENDER
-  // ============================================================================
 
   return (
     <div 
@@ -250,7 +222,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
     >
-      {/* Video Source */}
       {type === 'youtube' ? (
         <div className="absolute inset-0 pointer-events-none overflow-hidden flex items-center justify-center">
           <div id={playerId} className="w-full h-full md:h-[110%] pointer-events-none" />
@@ -266,7 +237,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         />
       )}
 
-      {/* Loading Overlay */}
       {!isReady && (
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-black">
           <motion.div 
@@ -278,11 +248,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         </div>
       )}
 
-      {/* Custom Controls Layer */}
       {showControls && (
-        <div className={`absolute inset-0 z-10 transition-opacity duration-500 ${isHovering || !isPlaying ? 'opacity-100' : 'opacity-0 md:group-hover/player:opacity-100'}`}>
-          
-          {/* Center Interaction Area */}
+        <div className={`absolute inset-0 z-10 transition-opacity duration-500 ${isHovering || !isPlaying || isReelsMode ? 'opacity-100' : 'opacity-0 md:group-hover/player:opacity-100'}`}>
           <div className="absolute inset-0 flex items-center justify-center pointer-events-auto cursor-pointer" onClick={() => togglePlay()}>
             <AnimatePresence>
               {showCenterIcon && (
@@ -298,66 +265,53 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
             </AnimatePresence>
           </div>
 
-          {/* Bottom Controls Bar */}
-          <div className="absolute bottom-0 left-0 w-full p-4 md:p-8 pt-20 bg-gradient-to-t from-black via-black/60 to-transparent pointer-events-none">
+          <div className="absolute bottom-0 left-0 w-full p-4 md:p-8 pt-20 bg-gradient-to-t from-black via-black/40 to-transparent pointer-events-none">
             <div className="max-w-7xl mx-auto flex flex-col gap-3 md:gap-5 pointer-events-auto">
-              
-              {/* Seeker */}
-              <div className="relative h-6 flex items-center group/seek">
-                <input
-                  type="range"
-                  min="0"
-                  max="100"
-                  step="0.1"
-                  value={progress}
-                  onChange={handleSeek}
-                  className="w-full h-1 md:h-1.5 bg-white/10 appearance-none cursor-pointer rounded-full accent-accent transition-all group-hover/seek:h-2"
-                  style={{
-                    background: `linear-gradient(to right, #ffffff ${progress}%, rgba(255,255,255,0.1) ${progress}%)`
-                  }}
-                />
-              </div>
+              {!isReelsMode && (
+                <div className="relative h-6 flex items-center group/seek">
+                  <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    step="0.1"
+                    value={progress}
+                    onChange={handleSeek}
+                    className="w-full h-1 md:h-1.5 bg-white/10 appearance-none cursor-pointer rounded-full accent-accent transition-all group-hover/seek:h-2"
+                    style={{
+                      background: `linear-gradient(to right, #ffffff ${progress}%, rgba(255,255,255,0.1) ${progress}%)`
+                    }}
+                  />
+                </div>
+              )}
 
-              {/* Control Buttons Bar */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4 md:gap-8">
-                  {/* Play/Pause */}
                   <button onClick={() => togglePlay()} className="text-accent hover:scale-110 transition-transform active:scale-95">
                     {isPlaying ? <Pause className="w-5 h-5 md:w-6 md:h-6" fill="currentColor" /> : <Play className="w-5 h-5 md:w-6 md:h-6" fill="currentColor" />}
                   </button>
 
-                  {/* Volume Group */}
-                  <div className="flex items-center gap-3 group/volume">
+                  <div className="flex items-center gap-3">
                     <button onClick={() => toggleMute()} className="text-accent/60 hover:text-accent transition-colors">
-                      {isMuted || volume === 0 ? <VolumeX className="w-4 h-4 md:w-5 md:h-5" /> : <Volume2 className="w-4 h-4 md:w-5 md:h-5" />}
+                      {isMuted ? <VolumeX className="w-4 h-4 md:w-5 md:h-5" /> : <Volume2 className="w-4 h-4 md:w-5 md:h-5" />}
                     </button>
-                    <div className="hidden md:flex w-0 group-hover/volume:w-24 overflow-hidden transition-all duration-300 items-center">
-                       <input
-                        type="range"
-                        min="0"
-                        max="1"
-                        step="0.01"
-                        value={isMuted ? 0 : volume}
-                        onChange={handleVolumeChange}
-                        className="w-full h-1 bg-white/10 appearance-none cursor-pointer accent-accent"
-                      />
-                    </div>
                   </div>
 
-                  {/* Timestamp */}
-                  <div className="text-[9px] md:text-xs font-mono tracking-tighter text-accent/50 tabular-nums">
-                    {formatTime(currentTime)} <span className="mx-1">/</span> {formatTime(duration)}
-                  </div>
+                  {!isReelsMode && (
+                    <div className="text-[9px] md:text-xs font-mono tracking-tighter text-accent/50 tabular-nums">
+                      {formatTime(currentTime)} <span className="mx-1">/</span> {formatTime(duration)}
+                    </div>
+                  )}
                 </div>
 
-                {/* Right Actions */}
                 <div className="flex items-center gap-3 md:gap-6">
                    <button onClick={() => playerRef.current?.seekTo(0)} className="text-accent/30 hover:text-accent transition-colors hidden md:block">
                     <RotateCcw className="w-4 h-4" />
                   </button>
-                  <button onClick={() => toggleFullscreen()} className="text-accent/40 hover:text-accent transition-colors p-1">
-                    {isFullscreen ? <Minimize className="w-5 h-5 md:w-6 md:h-6" /> : <Maximize className="w-5 h-5 md:w-6 md:h-6" />}
-                  </button>
+                  {!isReelsMode && (
+                    <button onClick={() => toggleFullscreen()} className="text-accent/40 hover:text-accent transition-colors p-1">
+                      {isFullscreen ? <Minimize className="w-5 h-5 md:w-6 md:h-6" /> : <Maximize className="w-5 h-5 md:w-6 md:h-6" />}
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
@@ -379,14 +333,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         .group\\/player:hover input[type='range']::-webkit-slider-thumb {
           width: 12px;
           height: 12px;
-          box-shadow: 0 0 10px rgba(0,0,0,0.5);
-        }
-        @media (max-width: 768px) {
-          input[type='range']::-webkit-slider-thumb {
-            width: 14px;
-            height: 14px;
-            opacity: 0.8;
-          }
         }
       `}</style>
     </div>

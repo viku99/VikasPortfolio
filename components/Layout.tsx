@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -5,6 +6,7 @@ import { useAppContext } from '../contexts/AppContext';
 import Navigation from './Navigation';
 import Showreel from './Showreel';
 import BottomNavigation from './BottomNavigation';
+import CustomCursor from './CustomCursor';
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
@@ -12,6 +14,9 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   return (
     <div className="bg-background text-accent font-sans min-h-screen relative overflow-x-hidden selection:bg-accent selection:text-background">
+      {/* Global custom cursor implementation */}
+      <CustomCursor />
+      
       {/* Enhanced Grain Overlay - Using global tailwind config from index.html */}
       <div className="fixed inset-0 pointer-events-none z-[100] opacity-[0.03] overflow-hidden">
         <div className="absolute inset-[-200%] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] animate-grain" />
