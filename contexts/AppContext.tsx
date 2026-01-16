@@ -1,22 +1,23 @@
 
 import React, { createContext, useState, useContext, ReactNode } from 'react';
 
-// Define the shape of our application context
 interface AppContextType {
   isReelPlaying: boolean;
   playReel: () => void;
   stopReel: () => void;
-  // cursorVariant tracks the current visual state of the custom cursor (e.g., 'default', 'link', 'text')
   cursorVariant: string;
   setCursorVariant: (variant: string) => void;
+  // Singleton Video State
+  activeVideoId: string | null;
+  setActiveVideoId: (id: string | null) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [isReelPlaying, setIsReelPlaying] = useState(false);
-  // Initialize cursor state to 'default'
   const [cursorVariant, setCursorVariant] = useState('default');
+  const [activeVideoId, setActiveVideoId] = useState<string | null>(null);
 
   const playReel = () => setIsReelPlaying(true);
   const stopReel = () => setIsReelPlaying(false);
@@ -28,7 +29,9 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         playReel, 
         stopReel, 
         cursorVariant, 
-        setCursorVariant 
+        setCursorVariant,
+        activeVideoId,
+        setActiveVideoId
       }}
     >
       {children}
